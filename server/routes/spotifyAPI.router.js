@@ -1,5 +1,6 @@
 const axios = require('axios');
 const express = require('express');
+const { legacy_createStore } = require('redux');
 const { default: logger } = require('redux-logger');
 const router = express.Router();
 require('dotenv').config();
@@ -18,28 +19,31 @@ let config = {
     }
   };
   
+//   will probably want to refactor this at some point so I'm not asking for a new access token every call.
+// Also refactor everything out to 
   router.get('/:artist', (req, res) => {
     const artist = req.params.artist;
     // first, gotta get our access token from Spotify
     console.log("Got our artist:", artist);
     axios.request(config)
+    // first .then response for this axios is the access token
     .then((response) => {
         const token = response.data.access_token;
         let items = [];
 
-        axios({
+        // then, use the access token to make a request for artist info
+        return axios({
             method: 'GET',
             url: `https://api.spotify.com/v1/search?q=${artist}&type=album&include_external=audio&limit=5`,
             headers: { 
                 'Authorization': `Bearer  ${token}`
             }
-        }).then(res => {
-            console.log("did we get our artist information? ===> ", res.data.albums.items);
-            items.push(res.data.albums.items);
         }).catch(err => {
             console.log("Something went horribly wrong", err);
         })
-        res.send(items);
+        // second .then res is the return of ^^^^^ this second axios call, which are all the items from Spotify. Now we send those back to the client vvvvvv
+    }).then(response => {
+        res.send(response.data.albums.items)
     })
     .catch((error) => {
         console.log(error);
