@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
+import axios from "axios";
 
 function CallSpotify() {
     const [input, setInput] = useState('');
@@ -16,6 +17,13 @@ function CallSpotify() {
         setInput('');
     }
 
+    const spotifyLogin = () => {
+        axios({
+            method: 'GET',
+            url: '/api/spotify/login'
+        })
+    }
+
     return (
 
         <>
@@ -26,6 +34,8 @@ function CallSpotify() {
                 onChange={(event) => setInput(event.target.value)}
                 />
             <button onClick={handleClick}>Search</button>
+            <button onClick={spotifyLogin}>LOGIN WITH SPOTIFY</button>
+            {/* <a href="/api/spotify/login">LOGIN TO SPOTIFY</a> */}
         </>
     )    
 }
