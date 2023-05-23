@@ -119,7 +119,7 @@ let config = {
   //           }
   //       })
   //   }).then(response => {
-  //       // console.log("Not sure what to call this:", response.data)
+  //       console.log("Not sure what to call this:", response.data)
   //   })
   //   .catch((error) => {
   //       console.log(error);
