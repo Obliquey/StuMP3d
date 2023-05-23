@@ -8,6 +8,9 @@ require('dotenv').config();
 
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
+function getRndInteger(min, max) {
+    return Math.floor(Math.random() * (max - min) ) + min;
+  }
 
 let config = {
     method: 'post',
@@ -25,10 +28,11 @@ let config = {
     const artist = req.params.artist;
     // first, gotta get our access token from Spotify
     console.log("Got our artist:", artist);
+    let token;
     axios.request(config)
     // first .then response for this axios is the access token
     .then((response) => {
-        const token = response.data.access_token;
+        token = response.data.access_token;
         let items = [];
 
         // then, use the access token to make a request for artist info
@@ -43,7 +47,19 @@ let config = {
         })
         // second .then res is the return of ^^^^^ this second axios call, which are all the items from Spotify. Now we send those back to the client vvvvvv
     }).then(response => {
-        res.send(response.data.albums.items)
+        // getting the ID of a random album from the response, to be used in another query
+        const albumToGet = response.data.albums.items[getRndInteger(0, response.data.albums.items.length)].id;
+        console.log("album", response.data.albums.items)
+
+        return axios({
+            method: 'GET',
+            url: `https://api.spotify.com/v1/albums/${albumToGet}/tracks`,
+            headers: {
+                'Authorization': `Bearer  ${token}`
+            }
+        })
+    }).then(response => {
+        // console.log("Not sure what to call this:", response.data)
     })
     .catch((error) => {
         console.log(error);
