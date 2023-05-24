@@ -60,7 +60,6 @@ router.get('/login', cookieparser(), (req, res) => {
 router.get('/callback', cookieparser(), function (req, res) {
     console.log('Gimme my callback func, here is our user:', req.user);
     // request refresh and access tokens after comparing states
-    // res.redirect('http://localhost:3000/#/user')
     let code = req.query.code || null;
     let state = req.query.state || null;
     let storedState = req.cookies ? req.cookies[stateKey] : null;
