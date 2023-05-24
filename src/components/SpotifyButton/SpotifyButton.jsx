@@ -17,13 +17,6 @@ function CallSpotify() {
         setInput('');
     }
 
-    const spotifyLogin = () => {
-        axios({
-            method: 'GET',
-            url: '/api/spotify/login'
-        })
-    }
-
     return (
 
         <>
@@ -34,8 +27,7 @@ function CallSpotify() {
                 onChange={(event) => setInput(event.target.value)}
                 />
             <button onClick={handleClick}>Search</button>
-            {/* <button onClick={spotifyLogin}>LOGIN WITH SPOTIFY</button> */}
-            <a href="http://localhost:5000/api/spotify/login">LOGIN TO SPOTIFY</a>
+            <a href="http://localhost:5000/api/spotifyOAuth/login">LOGIN TO SPOTIFY</a>
         </>
     )    
 }
