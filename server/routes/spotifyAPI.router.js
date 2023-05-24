@@ -35,6 +35,7 @@ let config = {
   router.get('/:artist', (req, res) => {
     const artist = req.params.artist;
     const userID = req.user.id;
+    // const infoToSend = []
   
     // fetch our token data from the DB
     pool.query(`SELECT access_token, token_expires, refresh_token FROM "users" WHERE users.id = $1;`, [userID])
@@ -52,6 +53,7 @@ let config = {
         } else if (expiry < Date.now()) {
           console.log("Token is all good! Ask away");
 
+          // API call for the searched artist, which we will extract the album id from
           return axios({
             method: 'GET',
             url: `https://api.spotify.com/v1/search?q=${artist}&type=album&include_external=audio&limit=5`,
@@ -60,6 +62,9 @@ let config = {
             }
         }).then((response) => {
           let rndmNum = getRndInteger(0, response.data.albums.items.length)
+
+          // gotta extract the album info of the album FROM WHICH we will pick songs.
+          // This is so we can display that information on the recap page
           const albumID = response.data.albums.items[rndmNum].id;
           const coverArt = response.data.albums.items[rndmNum].images[1];
           const releaseDate = response.data.albums.items[rndmNum].release_date;
@@ -72,6 +77,7 @@ let config = {
           }
           console.log("album", albumInfo)
   
+          // then we need to make the call for the tracks from that album
           return axios({
               method: 'GET',
               url: `https://api.spotify.com/v1/albums/${albumID}/tracks`,
@@ -79,13 +85,19 @@ let config = {
                   'Authorization': `Bearer  ${token}`
               }
           }).then(response => {
+            // gotta extract JUST the preview urls and the names of each song
+            // These we will return to the client side.
             let previewURLS = response.data.items.map(item => {
               return {URL: item.preview_url, name: item.name};
             })
             console.log("Here's our response?:", previewURLS);
-            res.send(albumInfo, previewURLS);
+            let infoToSend = [albumInfo, previewURLS]
+            res.send(infoToSend);
+
+
+            // Don't mind these cascading catches
           }).catch(err => {
-            console.log("Error making GET req to Spotify for albums");
+            console.log("Error making GET req to Spotify for albums", err);
           })
         }).catch(err => {
           console.log("Error making GET req to Spotify for artist", err);
@@ -93,8 +105,6 @@ let config = {
       }}).catch(dbErr => {
         console.log("Error connecting to DB:", dbErr);
       })
-        // second .then res is the return of ^^^^^ this second axios call, which are all the items from Spotify. Now we send those back to the client vvvvvv
-      
   });
 
 
