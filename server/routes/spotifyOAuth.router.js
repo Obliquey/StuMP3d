@@ -5,6 +5,7 @@ const axios = require('axios');
 const querystring = require('querystring');
 const router = express.Router();
 const cookieparser = require('cookie-parser');
+const pool = require('../modules/pool');
 require('dotenv').config();
 // const { oAuth } = require('../modules/OAuth-middlware')
 
@@ -59,12 +60,6 @@ router.get('/callback', cookieparser(), function (req, res) {
     let code = req.query.code || null;
     let state = req.query.state || null;
     let storedState = req.cookies ? req.cookies[stateKey] : null;
-    console.log("***********");
-    console.log("***********");
-    console.log("***********");
-    console.log("***********");
-    console.log("***********");
-    console.log("Here is our code:", code);
     
     // vvvv this if statement correctly checks state with Spotify's returned state, making sure what we got back from them wasn't hacking of any sort vvvv
     if (state === null || state !== storedState) {
@@ -93,21 +88,33 @@ router.get('/callback', cookieparser(), function (req, res) {
             .then((response) => {
               console.log("Probably not gonna get here, but in .then() statement in our token request", response.status);
                 if (response.status === 200) {
-                    console.log(response)
+
+                    let tokenExpires = Number((Date.now() + response.data.expires_in))
+                    let access_token = data.access_token
+                    let refresh_token = data.refresh_token
+
                     
-                    .then((data) => {
-                        let access_token = data.access_token
-                        let refresh_token = data.refresh_token
+                    // *Got our tokens! Need to store them in the DB for access later, after determining the expiry time of the access token
+                    let sqlText = `INSERT INTO "users" ("access_token", "refresh_token", "token_expires")
+                    VALUES
+                    ($1, $2, $3);`;
+
+                    let sqlValues = [access_token, refresh_token, tokenExpires]
+                    pool.query(sqlText, sqlValues)
+                        .then(dbRes => {
+                            // again, once I get my page flow set up, I'll need to change this redirect vvvv
+                            res.redirect('http://localhost:3000/#/user')
+                        }).catch(dbErr => {
+                            console.log("Error connecting to our DB when storing access token", dbErr);
+                        })
+
                         
-  
-                        // I'll need to change this redirect to the play page, if the tokens came back properly. I suppose I'll need to post the tokens into the DB too
-  
+                        // *After successfully receiving our tokens, need to redirect to the User Login page / play page if they are logged in
                         // res.redirect('/#' +
                         //     querystring.stringify({
                         //         access_token: access_token,
                         //         refresh_token: refresh_token
                         //     }));
-                    });
                 } else {
                     res.redirect('/#' +
                         querystring.stringify({
