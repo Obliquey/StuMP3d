@@ -59,7 +59,12 @@ router.get('/callback', cookieparser(), function (req, res) {
     let code = req.query.code || null;
     let state = req.query.state || null;
     let storedState = req.cookies ? req.cookies[stateKey] : null;
-    console.log("Checking some necessary info, here's our code:", code, "and spotify's state:", state, "and our stored state:", storedState, "and our req.cookies:", req.cookies);
+    console.log("***********");
+    console.log("***********");
+    console.log("***********");
+    console.log("***********");
+    console.log("***********");
+    console.log("Here is our code:", code);
     
     // vvvv this if statement correctly checks state with Spotify's returned state, making sure what we got back from them wasn't hacking of any sort vvvv
     if (state === null || state !== storedState) {
@@ -70,32 +75,30 @@ router.get('/callback', cookieparser(), function (req, res) {
             }));
     } else {
       // the check went well, so now we run our call for our tokens!
-        res.clearCookie(stateKey); // eat (clear) cookie
-      console.log("In else{} statement in /callback");
-      let config = {
-        method: 'post',
-        maxBodyLength: Infinity,
-        url: `https://accounts.spotify.com/api/token?grant_type=client_credentials&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}`,
-        headers: { 
-          'Content-Type': 'application/x-www-form-urlencoded', 
-          'Cookie': '__Host-device_id=AQAoZkeT-nU1YJnRR7LdXXJnifEI05WNfTIoJvft1xaOw-JlsMQcGH46R5HzBZ0HiMwK5mTJ_B6uHztZEgfwNfN43UJ_sMlh_Es; sp_tr=false'
-        }
-      };
-  
+        res.clearCookie(stateKey); // eat (clear) cookie        
+        
+        // This is the  config for our call for tokens. Feeling kinda like Sonic going after rings, I want tokens so bad
+        let config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: `https://accounts.spotify.com/api/token?grant_type=authorization_code&code=${code}&redirect_uri=${redirect_uri}`,
+            headers: { 
+                'Authorization': 'Basic ' + (Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64')),
+              'Content-Type': 'application/x-www-form-urlencoded', 
+              'Cookie': '__Host-device_id=AQAoZkeT-nU1YJnRR7LdXXJnifEI05WNfTIoJvft1xaOw-JlsMQcGH46R5HzBZ0HiMwK5mTJ_B6uHztZEgfwNfN43UJ_sMlh_Es; sp_tr=false'
+            }
+          };
+    
         axios(config) // make request to token endpoint for our tokens
             .then((response) => {
-              console.log("Probably not gonna get here, but in .then() statement in our token request", response.data);
+              console.log("Probably not gonna get here, but in .then() statement in our token request", response.status);
                 if (response.status === 200) {
-                    response.json().then((data) => {
+                    console.log(response)
+                    
+                    .then((data) => {
                         let access_token = data.access_token
                         let refresh_token = data.refresh_token
-                        console.log("*****************");
-                        console.log("*****************");
-                        console.log("*****************");
-                        console.log("*****************");
-                        console.log("*****************");
-                        console.log("*****************");
-                        console.log("Here are our tokens:", access_token, "And our refresh token:", refresh_token);
+                        
   
                         // I'll need to change this redirect to the play page, if the tokens came back properly. I suppose I'll need to post the tokens into the DB too
   
