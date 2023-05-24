@@ -6,6 +6,10 @@ const querystring = require('querystring');
 const router = express.Router();
 const cookieparser = require('cookie-parser');
 const pool = require('../modules/pool');
+const {
+    rejectUnauthenticated,
+  } = require('../modules/authentication-middleware');
+const userStrategy = require('../strategies/user.strategy');
 require('dotenv').config();
 // const { oAuth } = require('../modules/OAuth-middlware')
 
@@ -54,7 +58,7 @@ router.get('/login', cookieparser(), (req, res) => {
 
 
 router.get('/callback', cookieparser(), function (req, res) {
-    console.log('Gimme my callback func');
+    console.log('Gimme my callback func, here is our user:', req.user);
     // request refresh and access tokens after comparing states
     // res.redirect('http://localhost:3000/#/user')
     let code = req.query.code || null;
@@ -86,20 +90,22 @@ router.get('/callback', cookieparser(), function (req, res) {
     
         axios(config) // make request to token endpoint for our tokens
             .then((response) => {
-              console.log("Probably not gonna get here, but in .then() statement in our token request", response.status);
                 if (response.status === 200) {
 
                     let tokenExpires = Number((Date.now() + response.data.expires_in))
-                    let access_token = data.access_token
-                    let refresh_token = data.refresh_token
-
+                    let access_token = response.data.access_token
+                    let refresh_token = response.data.refresh_token
+                    let userID = req.user.id;
                     
                     // *Got our tokens! Need to store them in the DB for access later, after determining the expiry time of the access token
-                    let sqlText = `INSERT INTO "users" ("access_token", "refresh_token", "token_expires")
-                    VALUES
-                    ($1, $2, $3);`;
+                    let sqlText = `UPDATE "users" 
+                        SET access_token = $1,
+                            refresh_token = $2,
+                            token_expires = $3
+                        WHERE users.id = $4;
+                    `;
 
-                    let sqlValues = [access_token, refresh_token, tokenExpires]
+                    let sqlValues = [access_token, refresh_token, tokenExpires, userID]
                     pool.query(sqlText, sqlValues)
                         .then(dbRes => {
                             // again, once I get my page flow set up, I'll need to change this redirect vvvv
@@ -110,12 +116,9 @@ router.get('/callback', cookieparser(), function (req, res) {
 
                         
                         // *After successfully receiving our tokens, need to redirect to the User Login page / play page if they are logged in
-                        // res.redirect('/#' +
-                        //     querystring.stringify({
-                        //         access_token: access_token,
-                        //         refresh_token: refresh_token
-                        //     }));
+                    //    res.redirect('some kind of user page')
                 } else {
+                    // maybe make some kind of error page to redirect to, that takes the error message and makes a popup?
                     res.redirect('/#' +
                         querystring.stringify({
                             error: 'invalid_token'
