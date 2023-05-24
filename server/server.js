@@ -1,8 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const app = express();
 require('dotenv').config();
 
-const app = express();
+// *Stuff needed for Spotify madness*
+const cors = require('cors')
+const cookieparser = require('cookie-parser');
 
 const sessionMiddleware = require('./modules/session-middleware');
 const passport = require('./strategies/user.strategy');
@@ -10,6 +13,8 @@ const passport = require('./strategies/user.strategy');
 // Route includes
 const userRouter = require('./routes/user.router');
 const spotifyRouter = require('./routes/spotifyAPI.router')
+const spotifyOAuth = require('./routes/spotifyOAuth.router')
+
 
 // Body parser middleware
 app.use(bodyParser.json());
@@ -25,9 +30,10 @@ app.use(passport.session());
 /* Routes */
 app.use('/api/user', userRouter);
 app.use('/api/spotify', spotifyRouter);
-
+app.use('/api/spotifyOAuth', spotifyOAuth)
 // Serve static files
-app.use(express.static('build'));
+app.use(express.static('build')).use(cors()).use(cookieparser());
+
 
 // App Set //
 const PORT = process.env.PORT || 5000;
