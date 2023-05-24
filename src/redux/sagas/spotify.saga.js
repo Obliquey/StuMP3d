@@ -8,8 +8,16 @@ function* callSpotify(action) {
         const items = yield axios({ method: 'GET', url: `/api/spotify/${action.payload}
         `})
         console.log("Here's our array of stuuuuuf:", items.data);
+        yield put({
+            type: 'PLACE_SONGS',
+            payload: items.data[1]
+        })
+        yield put({
+            type: 'PLACE_ALBUM_DATA',
+            payload: items.data[0]
+        })
     }catch {
-
+        console.log("Something went wrong in our Spotify Saga");
     }
 }
 
