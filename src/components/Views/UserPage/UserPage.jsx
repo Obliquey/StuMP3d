@@ -1,5 +1,5 @@
 import React from 'react';
-import LogOutButton from '../LogOutButton/LogOutButton';
+import LogOutButton from '../../FunctionComponents/LogOutButton/LogOutButton';
 import {useSelector} from 'react-redux';
 
 // * This component will be the display of all the User's info, like current streak and current score, song history etc.

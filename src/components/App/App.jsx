@@ -11,14 +11,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import Nav from '../Nav/Nav';
 import Footer from '../Footer/Footer';
 
-import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import ProtectedRoute from '../FunctionComponents/ProtectedRoute/ProtectedRoute';
 
-import AboutPage from '../AboutPage/AboutPage';
-import UserPage from '../UserPage/UserPage';
-import LoginPage from '../LoginPage/LoginPage';
-import RegisterPage from '../RegisterPage/RegisterPage';
-import SpotifyLogin from '../SpotifyLogin/SpotifyLogin';
-import PlayPage from '../PlayPage/PlayPage';
+import AboutPage from '../Views/AboutPage/AboutPage';
+import UserPage from '../Views/UserPage/UserPage';
+import LoginPage from '../Views/LoginPage/LoginPage';
+import RegisterPage from '../Views/RegisterPage/RegisterPage';
+import SpotifyLogin from '../Views/SpotifyLogin/SpotifyLogin';
+import PlayPage from '../Views/PlayPage/PlayPage';
 
 import './App.css';
 
