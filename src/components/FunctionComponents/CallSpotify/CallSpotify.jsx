@@ -4,9 +4,9 @@ import { useState } from "react";
 function CallSpotify() {
     const [input, setInput] = useState('');
     const dispatch = useDispatch();
+    const songsArrived = useSelector(store => store.spotify.songsArrived)
+    const previews = useSelector(store => store.spotify.previews)
 
-    // upon button click, take the artist the user gave as input and send it to the saga for proccessing.
-    // Will need this to also include conditional rendering of the embedded song.
     const handleClick = () => {
         dispatch({
             type: 'CALL_SPOTIFY',
@@ -14,6 +14,9 @@ function CallSpotify() {
         })
         // will want to conditionally clear this when a song starts playing?
         setInput('');
+    }
+    if(songsArrived === 'true') {
+        console.log("Previews:", previews);
     }
 
     return (
