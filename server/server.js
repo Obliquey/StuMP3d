@@ -29,7 +29,9 @@ app.use(passport.session());
 
 /* Routes */
 app.use('/api/user', userRouter);
+// route for making API calls specifically for getting song data vvvv
 app.use('/api/spotify', spotifyRouter);
+// route for all OAuth flow stuff vvvv
 app.use('/api/spotifyOAuth', spotifyOAuth)
 // Serve static files
 app.use(express.static('build')).use(cors()).use(cookieparser());
