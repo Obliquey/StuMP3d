@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-const previewsReducer = (state=[], action) => {
+const previews = (state=[], action) => {
     switch (action.type) {
         case 'PLACE_SONGS':
             return action.payload;
@@ -9,7 +9,7 @@ const previewsReducer = (state=[], action) => {
     }
 }
 
-const albumInfoReducer = (state=[], action) => {
+const albumInfo = (state=[], action) => {
     switch (action.type) {
         case 'PLACE_ALBUM_DATA':
             return action.payload;
@@ -18,7 +18,17 @@ const albumInfoReducer = (state=[], action) => {
     }
 }
 
+const songsArrived = (state='false', action) => {
+    switch (action.type) {
+        case 'SET_TRUE_SONGS_ARE_HERE':
+            return action.payload;
+        default:
+            return state;
+    }
+}
+
 export default combineReducers({
-    previewsReducer,
-    albumInfoReducer
+    previews,
+    albumInfo,
+    songsArrived
 });

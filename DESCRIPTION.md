@@ -17,3 +17,4 @@
     - [] Really, change all the res.redirects() is spotifyOAuth.router to things that make sense.
     - [] Will want to edit how I choose albums/tracks to listen to. Say, if one of the albums is a single? 
         - [] Also, it'd be nice to make it so that I take tracks from several different albums to choose from, rather than all from the same album.
+    - [] Gotta edit what user information is stored in the user reducer. Or, what's even sent back along to the user saga.

@@ -108,7 +108,7 @@ router.get('/callback', cookieparser(), function (req, res) {
                     pool.query(sqlText, sqlValues)
                         .then(dbRes => {
                             // again, once I get my page flow set up, I'll need to change this redirect vvvv
-                            res.redirect('http://localhost:3000/#/user')
+                            res.redirect('http://localhost:3000/#/playPage')
                         }).catch(dbErr => {
                             console.log("Error connecting to our DB when storing access token", dbErr);
                         })

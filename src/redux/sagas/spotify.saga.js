@@ -16,6 +16,10 @@ function* callSpotify(action) {
             type: 'PLACE_ALBUM_DATA',
             payload: items.data[0]
         })
+        yield put({
+            type: 'SET_TRUE_SONGS_ARE_HERE',
+            payload: 'true'
+        })
     }catch {
         console.log("Something went wrong in our Spotify Saga");
     }
