@@ -19,16 +19,17 @@ function CallSpotify() {
 
     return (
 
-        <>
+        <div className="text-center">
+            {/* I might want to wrap this input in a form */}
             <input 
+                className="border"
                 placeholder='artist' 
                 type="text" 
                 value={input}
                 onChange={(event) => setInput(event.target.value)}
                 />
-            <button onClick={handleClick}>Search</button>
-            <a href="http://localhost:5000/api/spotifyOAuth/login">LOGIN TO SPOTIFY</a>
-        </>
+            <button className="border rounded-full" onClick={handleClick}>Search</button>
+        </div>
     )    
 }
 export default CallSpotify;
