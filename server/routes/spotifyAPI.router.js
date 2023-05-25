@@ -41,20 +41,10 @@ router.get('/getArtist/:artist', (req, res) => {
   pool.query(`SELECT access_token, token_expires, refresh_token FROM "users" WHERE users.id = $1;`, [userID])
   .then((dbRes) => {
     // extract it
-      const token = dbRes.rows[0].access_token
-      const expiry = Number(Date.now() + dbRes.rows[0].token_expires);
-      const refreshToken = dbRes.rows[0].refresh_token
+      let token = dbRes.rows[0].access_token
+      let expiry = Number(Date.now() + dbRes.rows[0].token_expires);
+      let refreshToken = dbRes.rows[0].refresh_token
       let items = [];
-
-
-      // Then, check if access_token is expired. If it is, we will need to request a new one.
-      if(expiry > Date.now() || expiry === Date.now()) {
-        // gotta make a new request with the refresh token here, or redirect to a different function to refresh the token.
-        console.log("Gotta get a new token!", expiry);
-        res.redirect(`/api/spotify/refresh_token/${artist}`)
-
-      } else if (expiry < Date.now()) {
-        console.log("Token is all good! Ask away");
 
         // API call for the searched artist, which we will extract the album id from
         return axios({
@@ -104,8 +94,10 @@ router.get('/getArtist/:artist', (req, res) => {
         })
       }).catch(err => {
         console.log("Error making GET req to Spotify for artist", err);
+        // If there is an error with our token access call to Spotify, this error will proc and we will go to refresh the token
+        res.redirect(`/api/spotify/refresh_token/${artist}`)
       })
-    }}).catch(dbErr => {
+    }).catch(dbErr => {
       console.log("Error connecting to DB:", dbErr);
     })
 });
@@ -121,40 +113,37 @@ router.get('/refresh_token/:artist', (req, res) => {
       .then(dbRes => {
         // now we gotta use it in another request to the Spotify API to ask for another access token
         console.log("let's see what we've got:", dbRes.rows);
+        console.log("************");
+        console.log("************");
+        console.log("************");
+        console.log("************");
+        console.log("************");
+        console.log("************");
+        console.log("************");
+        console.log("************");
 
-        const refresh_token = dbRes.rows.refresh_token;
+        const refresh_token = dbRes.rows[0].refresh_token;
 
-        // const config = {
-        //   method: 'post',
-        //   maxBodyLength: Infinity,
-        //   url: `https://accounts.spotify.com/api/token?grant_type=refresh_token&refresh_token=${refresh_token}`,
-        //   headers: { 
-        //       'Authorization': 'Basic ' + (Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64')),
-        //     'Content-Type': 'application/x-www-form-urlencoded', 
-        //     'Cookie': '__Host-device_id=AQAoZkeT-nU1YJnRR7LdXXJnifEI05WNfTIoJvft1xaOw-JlsMQcGH46R5HzBZ0HiMwK5mTJ_B6uHztZEgfwNfN43UJ_sMlh_Es; sp_tr=false'
-        //   }
-        // };
+        const config = {
+          method: 'post',
+          maxBodyLength: Infinity,
+          url: `https://accounts.spotify.com/api/token?grant_type=refresh_token&refresh_token=${refresh_token}`,
+          headers: { 
+              'Authorization': 'Basic ' + (Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64')),
+            'Content-Type': 'application/x-www-form-urlencoded', 
+            'Cookie': '__Host-device_id=AQAoZkeT-nU1YJnRR7LdXXJnifEI05WNfTIoJvft1xaOw-JlsMQcGH46R5HzBZ0HiMwK5mTJ_B6uHztZEgfwNfN43UJ_sMlh_Es; sp_tr=false'
+          }
+        };
 
-        // let config2 = {
-        //   method: 'post',
-        //   maxBodyLength: Infinity,
-        //   url: `https://accounts.spotify.com/api/token?grant_type=refresh_token&refresh_token=${refresh_token}`,
-        //   headers: { 
-        //     'Authorization': 'Basic ' + (Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64')),
-        //     'Content-Type': 'application/x-www-form-urlencoded', 
-        //     'Cookie': '__Host-device_id=AQAoZkeT-nU1YJnRR7LdXXJnifEI05WNfTIoJvft1xaOw-JlsMQcGH46R5HzBZ0HiMwK5mTJ_B6uHztZEgfwNfN43UJ_sMlh_Es; __Secure-TPASESSION=AQBSC9xOPz6GSreOHZHEiHd9de5K372t2IACs/WxxKwbzOX0QKu734Jj7ZW64l1kpLaZpMuIpne5TFE2h5PqohcGVRVgrhMRjoQ=; sp_sso_csrf_token=013acda7193dc07c73dfb746992333b9add7ce11b631363834383634363433303739; sp_tr=false'
-        //   }
-        // };
         // **GOTTA FIGURE OUT HOW To CONFIGURE THIS AXIOS CALL vvvvvvvvvvv
 
         // This is our call to Spotify to refresh our access token.
-        axios(config2)
+        axios(config)
           .then((response) => {
             if(response.status === 200) {
             console.log("Did we get our token?", response.data);
             let tokenExpires = Number((Date.now() + response.data.expires_in))
             let access_token = response.data.access_token
-            let refresh_token = response.data.refresh_token
             
             // if the request to Spotify is successful, we update the User's DB info with the new token and token expiry time
             pool.query(
@@ -164,7 +153,7 @@ router.get('/refresh_token/:artist', (req, res) => {
             `, [access_token, tokenExpires]
             ).then(dbRes => {
               // if that's successful, we then send the user (unbeknownst to them) back to the /getArtist route, along with their original searched artist.
-              console.log("Successfully update the database with new Access token");
+              console.log("Successfully updated the database with new Access token");
               res.redirect(`/api/spotify/getArtist/${artist}`)
             }).catch(dbErr => {
               console.log("Error connecting with DB in /refresh_token", dbErr);
