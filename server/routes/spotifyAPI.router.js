@@ -111,17 +111,8 @@ router.get('/refresh_token/:artist', (req, res) => {
   // gotta get the refresh token from the DB
   pool.query('SELECT access_token, refresh_token FROM "users" WHERE users.id = $1;', [userID])
       .then(dbRes => {
+        
         // now we gotta use it in another request to the Spotify API to ask for another access token
-        console.log("let's see what we've got:", dbRes.rows);
-        console.log("************");
-        console.log("************");
-        console.log("************");
-        console.log("************");
-        console.log("************");
-        console.log("************");
-        console.log("************");
-        console.log("************");
-
         const refresh_token = dbRes.rows[0].refresh_token;
 
         const config = {
