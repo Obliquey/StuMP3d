@@ -13,8 +13,7 @@ function DisplaySongs() {
         return Math.floor(Math.random() * (max - min) ) + min;
       };
 
-    //   currently, I'm picking the song from this component, but I'm wondering if I should pick in on the server and put it in it's own reducer?
-    console.log("Previews.length:", previews.length);
+    //   Picking a random index from the previews to pick a song
     let songIndex = getRndInteger(0, previews.length);
     let song = previews[songIndex];
     
@@ -23,10 +22,14 @@ function DisplaySongs() {
     if(song) {
         let allChoices = [];
         const getOtherChoices = () => {
+            // removing the chosen song first
             previews.splice(songIndex, 1)
             for (let i = 0; i < 3; i++) {
-                console.log("Choice:", allChoices);
+
+                // get a random index from the previews
                 let rndInt = getRndInteger(0, previews.length);
+                // setting a choice based upon randomized index, then push that into array and remove from previews
+                // so there are no duplicate choices pushed
                 let choice = previews[rndInt];
                 allChoices.push(choice);
                 previews.splice(rndInt, 1);
@@ -35,7 +38,6 @@ function DisplaySongs() {
         // concat the chosen song with the other choices to be passed to the choice display component
         getOtherChoices();
         allChoices.splice(getRndInteger(0, allChoices.length), 0, song)
-        console.log("All our choices:", allChoices);
 
         return (
             <>
@@ -49,7 +51,6 @@ function DisplaySongs() {
     } else {
         return <DisplayNoSong />
     }
-    // return <DisplayNoSong />
 }
 
 export default DisplaySongs;
