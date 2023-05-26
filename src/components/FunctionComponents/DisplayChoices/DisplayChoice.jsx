@@ -15,14 +15,14 @@ function DisplayChoices(props) {
                 type: 'CORRECTLY_GUESSED',
                 payload: props.correctSong
             })
-            console.log("Good job! You were correct in your guess!:", props.correctSong);
+            // console.log("Good job! You were correct in your guess!:", props.correctSong);
         } else {
             // If the user is incorrect, I will need to do basically the same thing EXCEPT a boolean value of 'false'.
             dispatch({
                 type: 'INCORRECTLY_GUESSED',
                 payload: props.correctSong
             })
-            console.log("Try again!");
+            // console.log("Try again!");
         }
     }
 

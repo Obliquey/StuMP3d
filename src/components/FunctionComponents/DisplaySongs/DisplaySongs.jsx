@@ -38,6 +38,7 @@ function DisplaySongs() {
         // concat the chosen song with the other choices to be passed to the choice display component
         getOtherChoices();
         allChoices.splice(getRndInteger(0, allChoices.length), 0, song)
+        console.log("Choices:", allChoices);
 
         return (
             <>
