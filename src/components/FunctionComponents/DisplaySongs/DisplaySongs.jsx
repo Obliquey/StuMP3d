@@ -12,16 +12,17 @@ function DisplaySongs() {
         return Math.floor(Math.random() * (max - min) ) + min;
       };
 
+    //   currently, I'm picking the song from this component, but I'm wondering if I should pick in on the server and put it in it's own reducer?
       let song = previews[getRndInteger(0, previews.length)]
     if(song) {
         console.log("Here's our song:",song);
         return (
-            <embed className="ml-200" src={song.URL}/>
+            <embed className="m-auto" src={song.URL}/>
         )
     } else {
         return <DisplayNoSong />
     }
-
+    // return <DisplayNoSong />
 }
 
 export default DisplaySongs;

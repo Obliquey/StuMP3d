@@ -17,7 +17,7 @@ function* callSpotify(action) {
             payload: items.data[0]
         })
         yield put({
-            type: 'SET_TRUE_SONGS_ARE_HERE',
+            type: 'SET_SONGS_ARRIVED',
             payload: 'true'
         })
     }catch {
