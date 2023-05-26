@@ -3,6 +3,7 @@ import loginSaga from './login.saga';
 import registrationSaga from './registration.saga';
 import userSaga from './user.saga';
 import sagaCallSpotify from './spotify.saga';
+import sagaGuess from './guess.saga';
 
 
 // rootSaga is the primary saga.
@@ -18,5 +19,6 @@ export default function* rootSaga() {
     registrationSaga(),
     userSaga(),
     sagaCallSpotify(),
+    sagaGuess(),
   ]);
 }

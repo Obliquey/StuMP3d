@@ -7,6 +7,7 @@ function* callSpotify(action) {
     try{
         const items = yield axios({ method: 'GET', url: `/api/spotify/getArtist/${action.payload}
         `})
+        
         console.log("Here's our array of stuuuuuf:", items.data);
         yield put({
             type: 'PLACE_SONGS',
@@ -17,7 +18,7 @@ function* callSpotify(action) {
             payload: items.data[0]
         })
         yield put({
-            type: 'SET_TRUE_SONGS_ARE_HERE',
+            type: 'SET_SONGS_ARRIVED',
             payload: 'true'
         })
     }catch {

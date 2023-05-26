@@ -19,6 +19,7 @@ import LoginPage from '../Views/LoginPage/LoginPage';
 import RegisterPage from '../Views/RegisterPage/RegisterPage';
 import SpotifyLogin from '../Views/SpotifyLogin/SpotifyLogin';
 import PlayPage from '../Views/PlayPage/PlayPage';
+import RecapPage from '../Views/RecapPage/RecapPage';
 
 import './App.css';
 
@@ -98,6 +99,10 @@ function App() {
               // Otherwise, show the registration page
               <RegisterPage />
             }
+          </Route>
+
+          <Route exact path='/recap'>
+            <RecapPage />
           </Route>
 
           {/* If none of the other routes matched, we will show a 404. */}

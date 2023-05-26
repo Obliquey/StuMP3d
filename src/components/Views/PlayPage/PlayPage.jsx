@@ -10,13 +10,13 @@ function PlayPage() {
 
 
     return(
-        <div className="text-center">
+        <div className="place-content-center text-center">
             {/* This is the search function */}
             {/* I might want to wrap this input in a form */}
             <CallSpotify />
 
             {/* This is the song display */}
-            {/* <DisplaySongs /> */}
+            <DisplaySongs />
         </div>
 
     )
