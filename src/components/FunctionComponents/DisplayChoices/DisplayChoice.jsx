@@ -5,6 +5,7 @@ function DisplayChoices(props) {
     console.log("Here's our props:", props);
     console.log("Here's our correct song:", props.correctSong);
     const dispatch = useDispatch();
+    const history = useHistory();
     
     const handleChoice = (song) => {
         if(song === props.correctSong.name) {
@@ -14,17 +15,17 @@ function DisplayChoices(props) {
             dispatch({
                 type: 'CORRECTLY_GUESSED',
                 payload: props.correctSong
-            })
-            // console.log("Good job! You were correct in your guess!:", props.correctSong);
+            });
+            history.push('/recap');
         } else {
             // If the user is incorrect, I will need to do basically the same thing EXCEPT a boolean value of 'false'.
             dispatch({
                 type: 'INCORRECTLY_GUESSED',
                 payload: props.correctSong
-            })
-            // console.log("Try again!");
+            });
+            history.push('/recap');
         }
-    }
+    };
 
     return (
         <>
