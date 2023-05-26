@@ -14,32 +14,35 @@ function DisplaySongs() {
       };
 
     //   currently, I'm picking the song from this component, but I'm wondering if I should pick in on the server and put it in it's own reducer?
-      let song = previews[getRndInteger(0, previews.length)]
-
-    //   gotta get the other choices for the user to guess from
-      let allChoices = [];
-      const getOtherChoices = () => {
-        for (let i = 0; i < 3; i++) {
-            let choice = previews[getRndInteger(0, previews.length)];
-            if (choice !== song){
-                allChoices.push(choice)
-            }
-        }
-      }
+    console.log("Previews.length:", previews.length);
+    let songIndex = getRndInteger(0, previews.length);
+    let song = previews[songIndex];
+    
+    
 
     if(song) {
+        let allChoices = [];
+        const getOtherChoices = () => {
+            previews.splice(songIndex, 1)
+            for (let i = 0; i < 3; i++) {
+                console.log("Choice:", allChoices);
+                let rndInt = getRndInteger(0, previews.length);
+                let choice = previews[rndInt];
+                allChoices.push(choice);
+                previews.splice(rndInt, 1);
+            }
+        }
         // concat the chosen song with the other choices to be passed to the choice display component
-        allChoices.push(song)
-        console.log("Here's our song:",song);
-        console.log("Here are our other choices:", allChoices);
-        // console.log("All the user options:", totalChoices);
         getOtherChoices();
+        allChoices.splice(getRndInteger(0, allChoices.length), 0, song)
+        console.log("All our choices:", allChoices);
 
         return (
             <>
                 <embed className="m-auto" src={song.URL}/>
                 <DisplayChoices 
                     songs={allChoices}
+                    correctSong={song}
                 />
             </>
         )
