@@ -14,6 +14,7 @@ const passport = require('./strategies/user.strategy');
 const userRouter = require('./routes/user.router');
 const spotifyRouter = require('./routes/spotifyAPI.router')
 const spotifyOAuth = require('./routes/spotifyOAuth.router')
+const guessRouter = require('./routes/guess.router')
 
 
 // Body parser middleware
@@ -32,7 +33,9 @@ app.use('/api/user', userRouter);
 // route for making API calls specifically for getting song data vvvv
 app.use('/api/spotify', spotifyRouter);
 // route for all OAuth flow stuff vvvv
-app.use('/api/spotifyOAuth', spotifyOAuth)
+app.use('/api/spotifyOAuth', spotifyOAuth);
+// route to control guesses
+app.use('/api/guess', guessRouter)
 // Serve static files
 app.use(express.static('build')).use(cors()).use(cookieparser());
 

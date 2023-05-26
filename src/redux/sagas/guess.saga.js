@@ -5,12 +5,12 @@ import { put, takeLatest } from "redux-saga/effects";
 
 function* correctGuess(action) {
     try {
-        // console.log("Guessed correctly!", action.payload);
-        // const response = yield axios({
-        //     method: 'POST',
-        //     url: '/api/guess',
-        //     data: {song: action.payload, guess:'true'}
-        // })
+        console.log("Guessed correctly!", action.payload);
+        const response = yield axios({
+            method: 'POST',
+            url: '/api/guess',
+            data: {song: action.payload, guess:'true'}
+        })
         yield put({
             type: 'SET_CORRECT_SONG',
             payload: {song: action.payload, guess:'true'}
@@ -26,12 +26,12 @@ function* correctGuess(action) {
 
 function* incorrectGuess(action) {
     try {
-        // console.log("Guessed incorrectly!", action.payload);
-        // const response = yield axios({
-        //     method: 'POST',
-        //     url: '/api/guess',
-        //     data: {song:action.payload, guess:'false'}
-        // })
+        console.log("Guessed incorrectly!", action.payload);
+        const response = yield axios({
+            method: 'POST',
+            url: '/api/guess',
+            data: {song:action.payload, guess:'false'}
+        })
         yield put({
             type:'SET_CORRECT_SONG',
             payload:{song:action.payload, guess:'false'}
