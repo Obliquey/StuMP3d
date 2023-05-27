@@ -7,6 +7,7 @@ import DisplayChoices from "../DisplayChoices/DisplayChoice";
 function DisplaySongs() {
     const songsArrived = useSelector(store => store.spotify.songsArrived)
     const previews = useSelector(store => store.spotify.previews)
+    const dispatch = useDispatch();
 
     // gotta pick a random song
     function getRndInteger(min, max) {
@@ -37,6 +38,9 @@ function DisplaySongs() {
         }
         // concat the chosen song with the other choices to be passed to the choice display component
         getOtherChoices();
+        dispatch({
+            type: 'POST_SONG'
+        })
         allChoices.splice(getRndInteger(0, allChoices.length), 0, song)
         console.log("Choices:", allChoices);
 

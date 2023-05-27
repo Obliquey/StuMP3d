@@ -26,6 +26,14 @@ function* callSpotify(action) {
     }
 }
 
+function* postSong(action) {
+    try {
+        
+    } catch (error) {
+        
+    }
+}
+
 function* sagaCallSpotify() {
     yield takeLatest('CALL_SPOTIFY', callSpotify)
 }
