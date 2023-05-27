@@ -1,11 +1,14 @@
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useSelector } from "react-redux";
 
 function DisplayChoices(props) {
     console.log("Here's our props:", props);
     console.log("Here's our correct song:", props.correctSong);
+
     const dispatch = useDispatch();
     const history = useHistory();
+    const albumInfo = useSelector(store => store.spotify.albumInfo)
     
     const handleChoice = (song) => {
         if(song === props.correctSong.name) {
@@ -14,7 +17,7 @@ function DisplayChoices(props) {
             // Then, I will need to use history.push to go to the recap page
             dispatch({
                 type: 'CORRECTLY_GUESSED',
-                payload: props.correctSong
+                payload: {correctSong: props.correctSong, albumInfo: albumInfo}
             });
             history.push('/recap');
         } else {

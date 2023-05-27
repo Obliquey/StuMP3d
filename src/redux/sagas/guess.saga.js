@@ -9,7 +9,7 @@ function* correctGuess(action) {
         const response = yield axios({
             method: 'POST',
             url: '/api/guess',
-            data: {song: action.payload, guess:'true'}
+            data: {songInfo: action.payload, guess:'true'}
         })
         yield put({
             type: 'SET_CORRECT_SONG',
