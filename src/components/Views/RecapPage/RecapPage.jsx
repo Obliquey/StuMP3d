@@ -35,7 +35,7 @@ function RecapPage() {
                 </>
             </p>
             <div>
-                <img src={albumInfo.coverArt.url}></img>
+                <img src={albumInfo.coverArt[1].url}></img>
                 <p>{albumInfo.albumName}</p>
                 <p>{albumInfo.releaseDate}</p>
                 <button className="border rounded-full p-1 mt-10 bg-purple-700 text-white" onClick={handleClick}>Play Again</button>
