@@ -5,6 +5,8 @@ const previews = (state=[], action) => {
     switch (action.type) {
         case 'PLACE_SONGS':
             return action.payload;
+        case 'EMPTY_PREVIEWS':
+            return action.payload;
         default:
             return state;
     }
@@ -15,6 +17,8 @@ const albumInfo = (state=[], action) => {
     switch (action.type) {
         case 'PLACE_ALBUM_DATA':
             return action.payload;
+        case 'EMPTY_ALBUM':
+            return action.payload;
         default:
             return state;
     }
@@ -24,6 +28,8 @@ const albumInfo = (state=[], action) => {
 const songsArrived = (state='false', action) => {
     switch (action.type) {
         case 'SET_SONGS_ARRIVED':
+            return action.payload;
+        case 'CLEAR_SONGS_ARRIVED':
             return action.payload;
         default:
             return state;
