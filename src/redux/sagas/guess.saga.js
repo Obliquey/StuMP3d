@@ -8,7 +8,7 @@ function* correctGuess(action) {
         console.log("Guessed correctly!", action.payload);
         const response = yield axios({
             method: 'POST',
-            url: '/api/guess/history',
+            url: '/api/guess/guess',
             data: {songInfo: action.payload, guess:'true'}
         })
         yield put({
