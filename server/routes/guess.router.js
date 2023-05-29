@@ -8,6 +8,11 @@ const {
 
 //   this route is for inserting the newly chosen song into the songs table, where a list of all listened-to songs will be kept
   router.post('/setSong', (req, res) => {
+      console.log("***********");
+      console.log("***********");
+      console.log("***********");
+      console.log("***********");
+      console.log("Our req.body:", req.body);
       const song = req.body.song.name;
       const coverArt = req.body.albumInfo.coverArt[2].url;
       const releaseDate = req.body.albumInfo.releaseDate;
@@ -44,7 +49,7 @@ const {
 
       pool.query(`SELECT * FROM "songs" WHERE song_name = '${song}';` )
             .then(dbRes => {
-                  console.log("Did we get the correct song name?", dbRes);
+                  console.log("Did we get the correct song name?", dbRes.rows);
 
                   let sqlText = `
                         INSERT INTO "history" ("user_id", "song_id", "correctly_guessed", "timestamp")
@@ -52,10 +57,10 @@ const {
                         ($1, $2, $3, NOW());
                   `;
                   let sqlValues = [userID, dbRes.rows[0].id, guess]
-                  
+
                   pool.query(sqlText, sqlValues)
                         .then(dbRes => {
-                              res.send(201)
+                              res.sendStatus(201)
                         }).catch(dbErr => {
                               console.log("Error connecting to DB:", dbErr);
                         })
@@ -63,7 +68,7 @@ const {
                   console.log("Error connecting to DB:", dbErr);
             })
 
-        res.send(200)
+        res.sendStatus(200)
   })
 
   

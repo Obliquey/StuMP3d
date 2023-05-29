@@ -28,9 +28,10 @@ function* fetchUser() {
 // saga to get the specific user's song history
 function* fetchUserHistory(action) {
   try {
+    // make the call to the server to get the user's history
     const res = yield axios.get(`/api/user/history/${action.payload}`);
 
-    console.log("Here's our user's history:", res.data);
+
   } catch (error) {
     console.log("Error connecting to server in fetchUserHistory", error);
   }

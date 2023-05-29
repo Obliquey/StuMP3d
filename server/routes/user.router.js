@@ -24,7 +24,24 @@ router.get('/user', rejectUnauthenticated, (req, res) => {
 
 router.get('/history/:id', (req, res) => {
   const userID = req.params.id;
-  console.log("Got our userID server-side:", userID);
+
+  let sqlText = `
+  SELECT songs.id AS song_id, song_name, artist, album, cover_art, year_released, correctly_guessed, history.timestamp AS ts FROM "history"
+      JOIN "songs"
+        ON history.song_id = songs.id
+      JOIN "users"
+        ON history.user_id = users.id
+      WHERE users.id = $1
+      ORDER BY ts DESC;
+  `;
+
+  pool.query(sqlText, [userID])
+      .then(dbRes => {
+        console.log("Got our user's history!:", dbRes.rows);
+        res.send(dbRes.rows);
+      }).catch(dbErr => {
+        console.log("Error connecting to the DB:", dbErr);
+      })
 })
 
 // Handles POST request with new user data
