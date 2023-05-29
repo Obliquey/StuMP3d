@@ -8,11 +8,6 @@ const {
 
 //   this route is for inserting the newly chosen song into the songs table, where a list of all listened-to songs will be kept
   router.post('/setSong', (req, res) => {
-      console.log("***********");
-      console.log("***********");
-      console.log("***********");
-      console.log("***********");
-      console.log("Our req.body:", req.body);
       const song = req.body.song.name;
       const coverArt = req.body.albumInfo.coverArt[2].url;
       const releaseDate = req.body.albumInfo.releaseDate;
@@ -22,7 +17,8 @@ const {
       const sqlQuery = `
             INSERT INTO "songs" ("song_name", "artist", "album", "cover_art", "year_released")
             VALUES
-            ($1, $2, $3, $4, $5);
+            ($1, $2, $3, $4, $5)
+            ON CONFLICT ("song_name") DO NOTHING;
       `;
       const sqlValues = [song, artist, albumName, coverArt, releaseDate];
 
@@ -38,14 +34,10 @@ const {
 // This route is for inserting the outcome of a guess by the user into the history table
 // as well as formulating the score and updating the user's score
   router.post('/guess', (req,res) => {
-      console.log("This is our song", req.body.songInfo.correctSong.name, "and our user:", req.user);
+      console.log("This is our song", req.body);
       const userID = req.user.id;
-      const guess = req.body.guess;
+      const guess = req.body.songInfo.guess;
       const song = req.body.songInfo.correctSong.name;
-      const artist = req.body.songInfo.albumInfo.artist;
-      const albumName = req.body.songInfo.albumInfo.albumName;
-      const coverArt = req.body.songInfo.albumInfo.coverArt[2];
-      const releaseDate = req.body.songInfo.albumInfo.releaseDate;
 
       pool.query(`SELECT * FROM "songs" WHERE song_name = '${song}';` )
             .then(dbRes => {
@@ -60,15 +52,16 @@ const {
 
                   pool.query(sqlText, sqlValues)
                         .then(dbRes => {
-                              res.sendStatus(201)
+                              res.sendStatus(200)
                         }).catch(dbErr => {
                               console.log("Error connecting to DB:", dbErr);
                         })
+                  console.log("Outiside of pool query in guess .post route, about to send 200 status");
+
             }).catch(dbErr => {
                   console.log("Error connecting to DB:", dbErr);
             })
 
-        res.sendStatus(200)
   })
 
   

@@ -39,7 +39,7 @@ function RecapPage() {
                 <img src={coverArt}></img>
                 <p>{albumName}</p>
                 <p>{releaseDate}</p>
-                <button className="border rounded-full p-1 mt-10 bg-purple-700 text-white" onClick={handleClick}>Play Again</button>
+                <button className="border-inherit rounded-full p-1 mt-10 bg-purple-700 text-white" onClick={handleClick}>Play Again</button>
             </div>
         </div>
     )
