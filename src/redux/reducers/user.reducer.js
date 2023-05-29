@@ -1,3 +1,5 @@
+import { combineReducers } from "redux";
+
 const userReducer = (state = {}, action) => {
   switch (action.type) {
     case 'SET_USER':

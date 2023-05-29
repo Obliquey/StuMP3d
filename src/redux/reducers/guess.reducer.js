@@ -1,4 +1,4 @@
-
+import { combineReducers } from "redux";
 
 const guess = (state={}, action) => {
     switch (action.type) {
@@ -9,4 +9,17 @@ const guess = (state={}, action) => {
     }
 }
 
-export default guess;
+// this reducer will be for the user's history
+const userHistory = (state=[], action) => {
+  switch (action.type) {
+    case 'SET_HISTORY':
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
+export default combineReducers({
+    guess,
+    userHistory
+})

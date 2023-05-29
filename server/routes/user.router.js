@@ -32,7 +32,8 @@ router.get('/history/:id', (req, res) => {
       JOIN "users"
         ON history.user_id = users.id
       WHERE users.id = $1
-      ORDER BY ts DESC;
+      ORDER BY ts DESC
+      LIMIT 10;
   `;
 
   pool.query(sqlText, [userID])
