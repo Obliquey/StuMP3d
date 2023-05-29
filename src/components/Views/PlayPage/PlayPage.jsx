@@ -1,6 +1,3 @@
-import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
-
 import CallSpotify from "../../FunctionComponents/CallSpotify/CallSpotify";
 import DisplaySongs from "../../FunctionComponents/DisplaySongs/DisplaySongs";
 
@@ -11,11 +8,10 @@ function PlayPage() {
 
     return(
         <div className="place-content-center text-center">
-            {/* This is the search function */}
-            {/* I might want to wrap this input in a form */}
+            {/* This is the search function component */}
             <CallSpotify />
 
-            {/* This is the song display */}
+            {/* This is the song display component */}
             <DisplaySongs />
         </div>
 

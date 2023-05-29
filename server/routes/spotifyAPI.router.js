@@ -32,8 +32,8 @@ let config = {
 
 //   will probably want to refactor this at some point so I'm not asking for a new access token every call.
 // Also refactor everything out to 
-router.get('/getArtist/:artist', (req, res) => {
-  const artist = req.params.artist;
+router.get('/getArtist', (req, res) => {
+  const artist = req.query.artist;
   const userID = req.user.id;
   // const infoToSend = []
 
@@ -58,17 +58,19 @@ router.get('/getArtist/:artist', (req, res) => {
 
         // gotta extract the album info of the album FROM WHICH we will pick songs.
         // This is so we can display that information on the recap page
+        const artistName = response.data.albums.items[rndmNum].artists[0].name;
         const albumID = response.data.albums.items[rndmNum].id;
-        const coverArt = response.data.albums.items[rndmNum].images[1];
+        const coverArt = response.data.albums.items[rndmNum].images;
         const releaseDate = response.data.albums.items[rndmNum].release_date;
         const albumName = response.data.albums.items[rndmNum].name;
         const albumInfo = {
+          artist: artistName,
           albumID: albumID,
           coverArt: coverArt,
           releaseDate: releaseDate,
           albumName: albumName
         }
-        console.log("album", albumInfo)
+        // console.log("album", albumInfo)
 
         // then we need to make the call for the tracks from that album
         return axios({
@@ -83,7 +85,6 @@ router.get('/getArtist/:artist', (req, res) => {
           let previewURLS = response.data.items.map(item => {
             return {URL: item.preview_url, name: item.name};
           })
-          console.log("Here's our response?:", previewURLS);
           let infoToSend = [albumInfo, previewURLS]
           res.send(infoToSend);
 
