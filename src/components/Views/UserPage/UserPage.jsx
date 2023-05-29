@@ -50,8 +50,13 @@ function UserPage() {
   
   // function to delete a specific history item
   const deleteItem = (id) => {
-    console.log("You sure you want to delete this song?",id);
+    dispatch({
+      type: 'DELETE_HISTORY_ITEM',
+      payload: id
+    })
   }
+
+
   return (
     <div className="flex flex-row space-x-12">
       {/* User Info + current streak, current score, etc */}
@@ -63,6 +68,7 @@ function UserPage() {
       </div>
 
       {/* their history, last ten songs listened to */}
+      {/* Might want to make this it's own component */}
       <div className="relative overflow-x-auto justify-self-center m-auto basis-1/2">
         <p className='text-xl underline italic text-center'>History</p>
         <table className="w-auto border-spacing-1 h-1 m-auto text-sm text-left text-gray-500 dark:text-gray-400">
