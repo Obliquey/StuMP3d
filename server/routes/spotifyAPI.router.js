@@ -31,7 +31,7 @@ let config = {
 
 
 //   will probably want to refactor this at some point so I'm not asking for a new access token every call.
-// Also refactor everything out to 
+// Also refactor everything out to not include singles/EP's
 router.get('/getArtist', (req, res) => {
   const artist = req.query.artist;
   const userID = req.user.id;

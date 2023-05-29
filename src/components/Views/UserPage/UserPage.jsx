@@ -6,11 +6,18 @@ import { useEffect } from 'react';
 
 // * This component will be the display of all the User's info, like current streak and current score, song history etc.
 function UserPage() {
+  const user = useSelector((store) => store.user);
+  const dispatch = useDispatch();
   // will need a useEffect to proc a dispatch upon page load
+  useEffect(() => {
+    dispatch({
+      type: 'GET_HISTORY',
+      payload: user.id
+    })
+  }, [])
   // dispatch will call to Saga to get the user's history + current score and streak
   // const history = useSelector(store => store.history)
-  const user = useSelector((store) => store.user);
-  // console.log("Here is our user:", user);
+  
   return (
     <div className="text-center">
       {/* User Info + current streak, current score, etc */}

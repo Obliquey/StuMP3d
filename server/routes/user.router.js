@@ -9,7 +9,7 @@ const userStrategy = require('../strategies/user.strategy');
 const router = express.Router();
 
 // Handles Ajax request for user information if user is authenticated
-router.get('/', rejectUnauthenticated, (req, res) => {
+router.get('/user', rejectUnauthenticated, (req, res) => {
   // Send back user object from the session (previously queried from the database)
   const user = {
     id: req.user.id, 
@@ -20,6 +20,12 @@ router.get('/', rejectUnauthenticated, (req, res) => {
   
   res.send(user);
 });
+
+
+router.get('/history/:id', (req, res) => {
+  const userID = req.params.id;
+  console.log("Got our userID server-side:", userID);
+})
 
 // Handles POST request with new user data
 // The only thing different from this and every other post we've seen
