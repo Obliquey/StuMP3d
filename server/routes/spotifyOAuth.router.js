@@ -40,7 +40,6 @@ const state = generateRandomString(16);
 
 // This is our call to Spotify to authorize the app with the user
 router.get('/login', cookieparser(), (req, res) => {
-  console.log("In /spotify/login, here's hoping");
   const scope = 'streaming user-read-playback-position';
   // not sure what these are vvv but they seem to be necessary
   res.cookie(stateKey, state);
@@ -58,7 +57,6 @@ router.get('/login', cookieparser(), (req, res) => {
 
 
 router.get('/callback', cookieparser(), function (req, res) {
-    console.log('Gimme my callback func, here is our user:', req.user);
     // request refresh and access tokens after comparing states
     let code = req.query.code || null;
     let state = req.query.state || null;

@@ -38,7 +38,6 @@ router.get('/history', (req, res) => {
 
   pool.query(sqlText, [userID])
       .then(dbRes => {
-        console.log("Got our user's history!:", dbRes.rows);
         res.send(dbRes.rows);
       }).catch(dbErr => {
         console.log("Error connecting to the DB:", dbErr);
@@ -50,7 +49,6 @@ router.delete('/delete/:id', (req,res) => {
 
   pool.query(`DELETE FROM "history" WHERE id = $1;`, [req.params.id])
       .then(dbRes => {
-        console.log("Successfully deleted item", dbRes);
         res.sendStatus(200)
       }).catch(dbErr => {
         console.log("Error deleting item from DB", dbErr);
