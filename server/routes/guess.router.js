@@ -63,7 +63,36 @@ const {
                   pool.query(`SELECT current_score AS score, current_streak AS streak FROM "users"
                   WHERE users.id = $1;`, [userID])
                         .then(dbRes => {
-                              console.log("This is our current score and streak for the user:", dbRes.rows);
+                              // extract the user's score and streak
+                              let score = Number(dbRes.rows[0].score);
+                              let streak = Number(dbRes.rows[0].streak);
+                              
+                              // then conditionally update those, depending on the guess status, with the user's new points
+                              if (guess === true) {
+                                    streak++;
+                                    score += (10 * streak);
+
+                                    pool.query(`UPDATE "users" SET current_score = $1, current_streak = $2 RETURNING current_score, current_streak;`, [score, streak])
+                                          .then(dbRes => {
+                                                console.log("Successfully updated DB with new score/streak:", dbRes.rows);
+                                          }).catch(dbErr => {
+                                                console.log("Error updating DB with new score/streak:", dbErr);
+                                          })
+                                          
+                              } else if (guess === false) {
+                                    streak = 0;
+                                    score = (score - 10);
+
+                                    pool.query(`UPDATE "users" SET current_score = $1, current_streak = $2 RETURNING current_score, current_streak;`, [score, streak])
+                                          .then(dbRes => {
+                                                console.log("Successfully updated DB with new score/streak:", dbRes.rows);
+                                          }).catch(dbErr => {
+                                                console.log("Error updating DB with new score/streak:", dbErr);
+                                          })
+                              }
+
+                        }).catch(dbErr => {
+                              console.log("Error retrieving user's score and streak in /guess, guess.router", dbErr);
                         })
 
             }).catch(dbErr => {

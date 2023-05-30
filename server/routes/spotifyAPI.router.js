@@ -82,6 +82,12 @@ router.get('/getArtist', (req, res) => {
         }).then(response => {
           // gotta extract JUST the preview urls and the names of each song
           // These we will return to the client side.
+
+          // * Something is happening with our calls to Spotify. I need to restrict it so that I don't get singles, but even with full albums we are still getting undefined songs
+          // * for our choices. Somewhere along the path of getting our songs to the front end we are losing info.
+
+          console.log("Checking what we're getting from Spotify, line:",85, response.data);
+          
           let previewURLS = response.data.items.map(item => {
             return {URL: item.preview_url, name: item.name};
           })
