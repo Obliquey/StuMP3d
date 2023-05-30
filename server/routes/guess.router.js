@@ -26,7 +26,7 @@ const {
             .then(dbRes => {
                   res.sendStatus(201)
             }).catch(dbErr => {
-                  console.log("Error connecting to DB:", dbErr);
+                  console.log("Error connecting to DB in /setSong, guess router:", dbErr);
             })
   })
   
@@ -34,14 +34,12 @@ const {
 // This route is for inserting the outcome of a guess by the user into the history table
 // as well as formulating the score and updating the user's score
   router.post('/guess', (req,res) => {
-      console.log("This is our song", req.body);
       const userID = req.user.id;
       const guess = req.body.songInfo.guess;
       const song = req.body.songInfo.correctSong.name;
 
       pool.query(`SELECT * FROM "songs" WHERE song_name = '${song}';` )
             .then(dbRes => {
-                  console.log("Did we get the correct song name?", dbRes.rows);
 
                   let sqlText = `
                         INSERT INTO "history" ("user_id", "song_id", "correctly_guessed", "timestamp")
@@ -52,14 +50,24 @@ const {
 
                   pool.query(sqlText, sqlValues)
                         .then(dbRes => {
+                              // this is actually processed AFTER line 60, surprisingly. so this sendStatus is the final word on how this function went
                               res.sendStatus(200)
                         }).catch(dbErr => {
-                              console.log("Error connecting to DB:", dbErr);
+                              console.log("Error connecting to DB in /guess, guess router:", dbErr);
                         })
-                  console.log("Outiside of pool query in guess .post route, about to send 200 status");
+
+                  // * This is where the points will be scored. First, I need to get the user's current streak and current score
+                  // * Then, I need to add the score from the current guess (either adding or subtracting 10, depending if the guess was correct/incorrect)
+                  // * Then, update the streak +/- 1
+                  // * Finally, update the table with the now-current info
+                  pool.query(`SELECT current_score AS score, current_streak AS streak FROM "users"
+                  WHERE users.id = $1;`, [userID])
+                        .then(dbRes => {
+                              console.log("This is our current score and streak for the user:", dbRes.rows);
+                        })
 
             }).catch(dbErr => {
-                  console.log("Error connecting to DB:", dbErr);
+                  console.log("Error connecting to DB in /guess, guess router:", dbErr);
             })
 
   })
