@@ -14,8 +14,10 @@
 **Things I will probably want to do at some point**
     - [] Refactor my extraction of song + album info. Maybe even send all the info client-side and deal with it there?
     - [] Change the error pages of when the User authorizes my app with Spotify, if there is a state-mismatch or an invalid token.
-    - [] Really, change all the res.redirects() is spotifyOAuth.router to things that make sense.
+    - [] Really, change all the res.redirects() in spotifyOAuth.router to things that make sense.
     - [] Will want to edit how I choose albums/tracks to listen to. Say, if one of the albums is a single? 
         - [] Also, it'd be nice to make it so that I take tracks from several different albums to choose from, rather than all from the same album.
-    - [] Gotta edit what user information is stored in the user reducer. Or, what's even sent back along to the user saga.
-    - [] Gotta refine my my artist search method ===> specifically, switch to using query params
+    - [X] Gotta edit what user information is stored in the user reducer. Or, what's even sent back along to the user saga.
+    - [X] Gotta refine my my artist search method ===> specifically, switch to using query params
+    - [] Need to figure out how to get the page to refresh upon item deletion from the table.
+    - [] Implement scoring, using basic score X streak math.

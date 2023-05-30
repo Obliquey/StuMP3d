@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 // * This component will be the display of all the User's info, like current streak and current score, song history etc.
 function UserPage() {
   const user = useSelector((store) => store.user);
-  const userHistory = useSelector(store => store.userHistory)
+  let userHistory = useSelector(store => store.userHistory)
   const dispatch = useDispatch();
   const history = useHistory();
   // will need a useEffect to proc a dispatch upon page load
