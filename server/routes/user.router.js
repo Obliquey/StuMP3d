@@ -47,7 +47,6 @@ router.get('/history/:id', (req, res) => {
 
 // this is the delete route for deleting an item from the user's history
 router.delete('/delete/:id', (req,res) => {
-  console.log("on the server side now, here's our id:", req.params.id);
 
   pool.query(`DELETE FROM "history" WHERE id = $1;`, [req.params.id])
       .then(dbRes => {

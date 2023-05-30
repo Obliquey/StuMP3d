@@ -12,7 +12,7 @@ function UserPage() {
   const dispatch = useDispatch();
   const history = useHistory();
   // will need a useEffect to proc a dispatch upon page load
-  console.log("Our user's info:", userHistory);
+
   useEffect(() => {
     // dispatch will call to Saga to get the user's history + current score and streak
     dispatch({
