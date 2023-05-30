@@ -54,7 +54,7 @@ function UserPage() {
       type: 'DELETE_HISTORY_ITEM',
       payload: id
     })
-    dispatch({type:'GET_HISTORY'})
+    dispatch({type:'GET_HISTORY', payload: user.id})
   }
 
 
