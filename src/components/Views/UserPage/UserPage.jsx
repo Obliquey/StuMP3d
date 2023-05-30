@@ -8,12 +8,13 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 // * This component will be the display of all the User's info, like current streak and current score, song history etc.
 function UserPage() {
   const user = useSelector((store) => store.user);
-  const userHistory = useSelector(store => store.guess.userHistory)
+  const userHistory = useSelector(store => store.userHistory)
   const dispatch = useDispatch();
   const history = useHistory();
   // will need a useEffect to proc a dispatch upon page load
   console.log("Our user's info:", userHistory);
   useEffect(() => {
+    // dispatch will call to Saga to get the user's history + current score and streak
     dispatch({
       type: 'GET_HISTORY',
       payload: user.id
@@ -29,7 +30,6 @@ function UserPage() {
     }
   } 
   
-  // dispatch will call to Saga to get the user's history + current score and streak
   
   // click handler to take the player back to the playPage + clear out the reducers
   const playAgain = () => {
@@ -54,6 +54,7 @@ function UserPage() {
       type: 'DELETE_HISTORY_ITEM',
       payload: id
     })
+    dispatch({type:'GET_HISTORY'})
   }
 
 

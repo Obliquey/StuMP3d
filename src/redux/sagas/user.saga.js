@@ -25,22 +25,8 @@ function* fetchUser() {
   }
 }
 
-// saga to get the specific user's song history
-function* fetchUserHistory(action) {
-  try {
-    // make the call to the server to get the user's history
-    const res = yield axios.get(`/api/user/history/${action.payload}`);
-
-    console.log("From the DB:", res.data);
-    yield put({type: 'SET_HISTORY', payload: res.data})
-  } catch (error) {
-    console.log("Error connecting to server in fetchUserHistory", error);
-  }
-}
-
 function* userSaga() {
   yield takeLatest('FETCH_USER', fetchUser);
-  yield takeLatest('GET_HISTORY', fetchUserHistory);
 }
 
 export default userSaga;

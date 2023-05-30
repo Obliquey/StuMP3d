@@ -45,6 +45,19 @@ router.get('/history/:id', (req, res) => {
       })
 })
 
+// this is the delete route for deleting an item from the user's history
+router.delete('/delete/:id', (req,res) => {
+  console.log("on the server side now, here's our id:", req.params.id);
+
+  pool.query(`DELETE FROM "history" WHERE id = $1;`, [req.params.id])
+      .then(dbRes => {
+        console.log("Successfully deleted item", dbRes);
+        res.sendStatus(200)
+      }).catch(dbErr => {
+        console.log("Error deleting item from DB", dbErr);
+      })
+})
+
 // Handles POST request with new user data
 // The only thing different from this and every other post we've seen
 // is that the password gets encrypted before being inserted
