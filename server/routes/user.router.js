@@ -21,8 +21,19 @@ router.get('/user', rejectUnauthenticated, (req, res) => {
   res.send(user);
 });
 
+router.get('/score', rejectUnauthenticated, async (req, res) => {
+  const userID = req.user.id
+  try {
+    const dbRes = await pool.query(`SELECT current_score AS score, current_streak AS streak FROM "users" WHERE id = $1;`, [userID])
 
-router.get('/history', (req, res) => {
+    console.log("User's Score:", dbRes.rows);
+  } catch (error) {
+    console.log("Error retrieving score in /score, user.router", error);
+  }
+
+})
+// router to get the user's last ten listened to songs
+router.get('/history', rejectUnauthenticated, (req, res) => {
   const userID = req.user.id;
 
   let sqlText = `
@@ -45,7 +56,7 @@ router.get('/history', (req, res) => {
 })
 
 // this is the delete route for deleting an item from the user's history
-router.delete('/delete/:id', (req,res) => {
+router.delete('/delete/:id', rejectUnauthenticated, (req,res) => {
 
   pool.query(`DELETE FROM "history" WHERE id = $1;`, [req.params.id])
       .then(dbRes => {

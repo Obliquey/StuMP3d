@@ -24,8 +24,19 @@ function* fetchUser() {
   }
 }
 
+function* fetchScore() {
+  try {
+    const res = yield axios.get('/api/user/score');
+
+    console.log("Got our user's score and streak:", res.data);
+  } catch (error) {
+    console.log("Error in user fetchScore saga", error);
+  }
+}
+
 function* userSaga() {
   yield takeLatest('FETCH_USER', fetchUser);
+  yield takeLatest('FETCH_SCORE', fetchScore);
 }
 
 export default userSaga;

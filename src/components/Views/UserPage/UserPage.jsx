@@ -18,11 +18,11 @@ function UserPage() {
     dispatch({
       type: 'GET_HISTORY'
     })
+    dispatch({type:'FETCH_SCORE'})
   }, [])
   
   // need to make sure my scores are updated
   const updateUserScores = () => {
-    dispatch({type:'FETCH_USER'})
   }
   
   // click handler to take the player back to the playPage + clear out the reducers
