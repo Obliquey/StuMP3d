@@ -16,8 +16,7 @@ function UserPage() {
   useEffect(() => {
     // dispatch will call to Saga to get the user's history + current score and streak
     dispatch({
-      type: 'GET_HISTORY',
-      payload: user.id
+      type: 'GET_HISTORY'
     })
   }, [])
 
@@ -54,7 +53,7 @@ function UserPage() {
       type: 'DELETE_HISTORY_ITEM',
       payload: id
     })
-    dispatch({type:'GET_HISTORY', payload: user.id})
+    dispatch({type:'GET_HISTORY'})
   }
 
 

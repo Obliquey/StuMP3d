@@ -22,8 +22,8 @@ router.get('/user', rejectUnauthenticated, (req, res) => {
 });
 
 
-router.get('/history/:id', (req, res) => {
-  const userID = req.params.id;
+router.get('/history', (req, res) => {
+  const userID = req.user.id;
 
   let sqlText = `
   SELECT songs.id AS song_id, history.id AS id, song_name, artist, album, cover_art, year_released, correctly_guessed, history.timestamp AS ts FROM "history"

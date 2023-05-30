@@ -13,7 +13,7 @@ function* deleteItem(action) {
 function* fetchUserHistory(action) {
   try {
     // make the call to the server to get the user's history
-    const res = yield axios.get(`/api/user/history/${action.payload}`);
+    const res = yield axios.get(`/api/user/history`);
 
     yield put({type: 'SET_HISTORY', payload: res.data})
   } catch (error) {
