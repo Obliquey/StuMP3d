@@ -9,10 +9,62 @@ const userStrategy = require('../strategies/user.strategy');
 const router = express.Router();
 
 // Handles Ajax request for user information if user is authenticated
-router.get('/', rejectUnauthenticated, (req, res) => {
+router.get('/user', rejectUnauthenticated, (req, res) => {
   // Send back user object from the session (previously queried from the database)
-  res.send(req.user);
+  const user = {
+    id: req.user.id, 
+    username: req.user.username, 
+    current_score: req.user.current_score,
+    current_streak: req.user.current_streak
+  }
+  
+  res.send(user);
 });
+
+router.get('/score', rejectUnauthenticated, async (req, res) => {
+  const userID = req.user.id
+  try {
+    const dbRes = await pool.query(`SELECT current_score AS score, current_streak AS streak FROM "users" WHERE id = $1;`, [userID])
+
+    res.send(dbRes.rows[0])
+  } catch (error) {
+    console.log("Error retrieving score in /score, user.router", error);
+  }
+
+})
+// router to get the user's last ten listened to songs
+router.get('/history', rejectUnauthenticated, (req, res) => {
+  const userID = req.user.id;
+
+  let sqlText = `
+  SELECT songs.id AS song_id, history.id AS id, song_name, artist, album, cover_art, year_released, correctly_guessed, history.timestamp AS ts FROM "history"
+      JOIN "songs"
+        ON history.song_id = songs.id
+      JOIN "users"
+        ON history.user_id = users.id
+      WHERE users.id = $1
+      ORDER BY history.id DESC
+      LIMIT 10;
+  `;
+
+  pool.query(sqlText, [userID])
+      .then(dbRes => {
+        res.send(dbRes.rows);
+      }).catch(dbErr => {
+        console.log("Error connecting to the DB:", dbErr);
+      })
+})
+
+// this is the delete route for deleting an item from the user's history
+router.delete('/delete/:id', rejectUnauthenticated, (req,res) => {
+
+  pool.query(`DELETE FROM "history" WHERE id = $1;`, [req.params.id])
+      .then(dbRes => {
+        res.sendStatus(200)
+      }).catch(dbErr => {
+        console.log("Error deleting item from DB", dbErr);
+      })
+})
 
 // Handles POST request with new user data
 // The only thing different from this and every other post we've seen

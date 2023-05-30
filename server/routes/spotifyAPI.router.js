@@ -31,7 +31,7 @@ let config = {
 
 
 //   will probably want to refactor this at some point so I'm not asking for a new access token every call.
-// Also refactor everything out to 
+// Also refactor everything out to not include singles/EP's
 router.get('/getArtist', (req, res) => {
   const artist = req.query.artist;
   const userID = req.user.id;
@@ -82,6 +82,12 @@ router.get('/getArtist', (req, res) => {
         }).then(response => {
           // gotta extract JUST the preview urls and the names of each song
           // These we will return to the client side.
+
+          // * Something is happening with our calls to Spotify. I need to restrict it so that I don't get singles, but even with full albums we are still getting undefined songs
+          // * for our choices. Somewhere along the path of getting our songs to the front end we are losing info.
+
+          console.log("Checking what we're getting from Spotify, line:",85, response.data);
+
           let previewURLS = response.data.items.map(item => {
             return {URL: item.preview_url, name: item.name};
           })
@@ -108,7 +114,6 @@ router.get('/getArtist', (req, res) => {
 router.get('/refresh_token/:artist', (req, res) => {
   const userID = req.user.id;
   const artist = req.params.artist
-  console.log("Got to our refresh_token route");
   // gotta get the refresh token from the DB
   pool.query('SELECT access_token, refresh_token FROM "users" WHERE users.id = $1;', [userID])
       .then(dbRes => {
@@ -133,7 +138,6 @@ router.get('/refresh_token/:artist', (req, res) => {
         axios(config)
           .then((response) => {
             if(response.status === 200) {
-            console.log("Did we get our token?", response.data);
             let tokenExpires = Number((Date.now() + response.data.expires_in))
             let access_token = response.data.access_token
             
@@ -151,7 +155,7 @@ router.get('/refresh_token/:artist', (req, res) => {
               console.log("Error connecting with DB in /refresh_token", dbErr);
             })
           } else {
-            console.log("Something went wrong, who knows");
+            console.log("Something went wrong when asking Spotify to refresh token in /refresh_token, spotifyAPI.router", response.status);
           }
           }).catch(err => {
             console.log("Something went wrong when using our refresh token", err);

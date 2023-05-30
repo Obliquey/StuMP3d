@@ -30,7 +30,7 @@ function CallSpotify() {
                 value={input}
                 onChange={(event) => setInput(event.target.value)}
                 />
-            <button className="border rounded-full p-2 bg-purple-700 text-white font-semibold" onClick={handleClick}>Search</button>
+            <button className="border-inherit rounded-full p-2 bg-purple-700 text-white font-semibold" onClick={handleClick}>Search</button>
         </div>
     )    
 }

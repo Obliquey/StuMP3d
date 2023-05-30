@@ -1,5 +1,3 @@
-
-
 const guess = (state={}, action) => {
     switch (action.type) {
         case 'SET_CORRECT_SONG':

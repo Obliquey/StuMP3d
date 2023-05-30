@@ -17,7 +17,8 @@ const {
       const sqlQuery = `
             INSERT INTO "songs" ("song_name", "artist", "album", "cover_art", "year_released")
             VALUES
-            ($1, $2, $3, $4, $5);
+            ($1, $2, $3, $4, $5)
+            ON CONFLICT ("song_name") DO NOTHING;
       `;
       const sqlValues = [song, artist, albumName, coverArt, releaseDate];
 
@@ -25,7 +26,7 @@ const {
             .then(dbRes => {
                   res.sendStatus(201)
             }).catch(dbErr => {
-                  console.log("Error connecting to DB:", dbErr);
+                  console.log("Error connecting to DB in /setSong, guess router:", dbErr);
             })
   })
   
@@ -33,18 +34,12 @@ const {
 // This route is for inserting the outcome of a guess by the user into the history table
 // as well as formulating the score and updating the user's score
   router.post('/guess', (req,res) => {
-      console.log("This is our song", req.body.songInfo.correctSong.name, "and our user:", req.user);
       const userID = req.user.id;
-      const guess = req.body.guess;
+      const guess = req.body.songInfo.guess;
       const song = req.body.songInfo.correctSong.name;
-      const artist = req.body.songInfo.albumInfo.artist;
-      const albumName = req.body.songInfo.albumInfo.albumName;
-      const coverArt = req.body.songInfo.albumInfo.coverArt[2];
-      const releaseDate = req.body.songInfo.albumInfo.releaseDate;
 
       pool.query(`SELECT * FROM "songs" WHERE song_name = '${song}';` )
             .then(dbRes => {
-                  console.log("Did we get the correct song name?", dbRes);
 
                   let sqlText = `
                         INSERT INTO "history" ("user_id", "song_id", "correctly_guessed", "timestamp")
@@ -52,18 +47,58 @@ const {
                         ($1, $2, $3, NOW());
                   `;
                   let sqlValues = [userID, dbRes.rows[0].id, guess]
-                  
+
                   pool.query(sqlText, sqlValues)
                         .then(dbRes => {
-                              res.send(201)
+                              // this is actually processed AFTER line 60, surprisingly. so this sendStatus is the final word on how this function went
+                              res.sendStatus(200)
                         }).catch(dbErr => {
-                              console.log("Error connecting to DB:", dbErr);
+                              console.log("Error connecting to DB in /guess, guess router:", dbErr);
                         })
+
+                  // * This is where the points will be scored. First, I need to get the user's current streak and current score
+                  // * Then, I need to add the score from the current guess (either adding or subtracting 10, depending if the guess was correct/incorrect)
+                  // * Then, update the streak +/- 1
+                  // * Finally, update the table with the now-current info
+                  pool.query(`SELECT current_score AS score, current_streak AS streak FROM "users"
+                  WHERE users.id = $1;`, [userID])
+                        .then(dbRes => {
+                              // extract the user's score and streak
+                              let score = Number(dbRes.rows[0].score);
+                              let streak = Number(dbRes.rows[0].streak);
+                              
+                              // then conditionally update those, depending on the guess status, with the user's new points
+                              if (guess === true) {
+                                    streak++;
+                                    score += (10 * streak);
+
+                                    pool.query(`UPDATE "users" SET current_score = $1, current_streak = $2 RETURNING current_score, current_streak;`, [score, streak])
+                                          .then(dbRes => {
+                                                console.log("Successfully updated DB with new score/streak:", dbRes.rows);
+                                          }).catch(dbErr => {
+                                                console.log("Error updating DB with new score/streak:", dbErr);
+                                          })
+                                          
+                              } else if (guess === false) {
+                                    streak = 0;
+                                    score = (score - 10);
+
+                                    pool.query(`UPDATE "users" SET current_score = $1, current_streak = $2 RETURNING current_score, current_streak;`, [score, streak])
+                                          .then(dbRes => {
+                                                console.log("Successfully updated DB with new score/streak:", dbRes.rows);
+                                          }).catch(dbErr => {
+                                                console.log("Error updating DB with new score/streak:", dbErr);
+                                          })
+                              }
+
+                        }).catch(dbErr => {
+                              console.log("Error retrieving user's score and streak in /guess, guess.router", dbErr);
+                        })
+
             }).catch(dbErr => {
-                  console.log("Error connecting to DB:", dbErr);
+                  console.log("Error connecting to DB in /guess, guess router:", dbErr);
             })
 
-        res.send(200)
   })
 
   

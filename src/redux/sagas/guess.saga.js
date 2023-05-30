@@ -9,13 +9,14 @@ function* correctGuess(action) {
         const response = yield axios({
             method: 'POST',
             url: '/api/guess/guess',
-            data: {songInfo: action.payload, guess:'true'}
+            data: {songInfo: action.payload}
         })
-        yield put({
+        const res = yield put({
             type: 'SET_CORRECT_SONG',
             payload: {song: action.payload, guess:'true'}
         })
-        if (response === 200) {
+        if (res === 200) {
+            console.log("Successfully made axios request to server in correctGuess saga");
         } else {
             console.log("Error in correctGuess saga, error making axios request to server");
         }
@@ -29,14 +30,15 @@ function* incorrectGuess(action) {
         console.log("Guessed incorrectly!", action.payload);
         const response = yield axios({
             method: 'POST',
-            url: '/api/guess/history',
-            data: {song:action.payload, guess:'false'}
+            url: '/api/guess/guess',
+            data: {songInfo:action.payload}
         })
-        yield put({
+        const res = yield put({
             type:'SET_CORRECT_SONG',
             payload:{song:action.payload, guess:'false'}
         })
-        if(response === 200) {
+        if(res === 200) {
+            console.log("Successfully made axios request to server in incorrectGuess saga")
         }else {
             console.log("Error in incorrectGuess saga, error making axios request to db");
         }
