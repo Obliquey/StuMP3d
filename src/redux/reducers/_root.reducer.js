@@ -4,6 +4,7 @@ import user from './user.reducer';
 import spotify from './spotify.reducer'
 import guess from './guess.reducer';
 import userHistory from './history.reducer'
+import userScore from './score.reducer';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
   user, // will have an id and username if someone is logged in
   spotify, // has all the song info
   guess, // holds the guess of the user
-  userHistory // holds the user's last 10 listened-to songs
+  userHistory, // holds the user's last 10 listened-to songs
+  userScore
 });
 
 export default rootReducer;

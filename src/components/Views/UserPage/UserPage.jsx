@@ -8,6 +8,7 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 // * This component will be the display of all the User's info, like current streak and current score, song history etc.
 function UserPage() {
   const user = useSelector((store) => store.user);
+  const userScore = useSelector((store) => store.userScore);
   const userHistory = useSelector(store => store.userHistory)
   const dispatch = useDispatch();
   const history = useHistory();
@@ -57,8 +58,8 @@ function UserPage() {
       {/* User Info + current streak, current score, etc */}
       <div className='m-auto basis-1/4 ml-86 border-inherit rounded-3xl text-center bg-purple-400 w-96 p-12 space-y-8'>
         <p className='text-4xl mb-24'>{user.username}</p>
-        <p>Current Score: {user.current_score}</p>
-        <p>Current Streak: {user.current_streak}</p>
+        <p>Current Score: {userScore.score}</p>
+        <p>Current Streak: {userScore.streak}</p>
         <button onClick={playAgain} className='border-inherit rounded-full p-2 bg-purple-700 m-2 text-white font-medium'>Play Again</button>
       </div>
 

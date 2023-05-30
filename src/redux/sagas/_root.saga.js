@@ -5,6 +5,7 @@ import userSaga from './user.saga';
 import sagaCallSpotify from './spotify.saga';
 import sagaGuess from './guess.saga';
 import historySaga from './history.saga'
+import scoreSaga from './score.saga';
 
 
 // rootSaga is the primary saga.
@@ -21,6 +22,7 @@ export default function* rootSaga() {
     userSaga(),
     sagaCallSpotify(),
     sagaGuess(),
-    historySaga()
+    historySaga(),
+    scoreSaga(),
   ]);
 }

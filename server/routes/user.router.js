@@ -26,7 +26,7 @@ router.get('/score', rejectUnauthenticated, async (req, res) => {
   try {
     const dbRes = await pool.query(`SELECT current_score AS score, current_streak AS streak FROM "users" WHERE id = $1;`, [userID])
 
-    console.log("User's Score:", dbRes.rows);
+    res.send(dbRes.rows[0])
   } catch (error) {
     console.log("Error retrieving score in /score, user.router", error);
   }

@@ -1,3 +1,5 @@
+import { combineReducers } from "redux";
+
 const userReducer = (state = {}, action) => {
   switch (action.type) {
     case 'SET_USER':
@@ -8,8 +10,6 @@ const userReducer = (state = {}, action) => {
       return state;
   }
 };
-
-
 
 // user will be on the redux state at:
 // state.user
