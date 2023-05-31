@@ -7,9 +7,9 @@ import React from 'react';
 // * This will be our How-To page
 function AboutPage() {
   return (
-    <div className="container">
+    <div className="text-center self-center">
       <div>
-        <p className='text-xl text-center'>Gotta put in some instructions for the game!</p>
+        <p className='text-xl text-center'>WELCOME TO STUMP3D</p>
       </div>
     </div>
   );

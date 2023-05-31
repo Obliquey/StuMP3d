@@ -56,7 +56,10 @@ function UserPage() {
   return (
     <div className="flex flex-row space-x-12">
       {/* User Info + current streak, current score, etc */}
-      <div className='m-auto basis-1/4 ml-86 border-inherit rounded-3xl text-center bg-purple-400 w-96 p-12 space-y-8'>
+      <div 
+      className='m-auto basis-1/4 ml-86 outline outline-double outline-offset-8 outline-8 outline-purple-300 
+      border-8 border-purple-400 rounded-3xl text-center bg-white w-96 p-12 space-y-8 '
+      >
         <p className='text-4xl mb-24'>{user.username}</p>
         <p>Current Score: {userScore.score}</p>
         <p>Current Streak: {userScore.streak}</p>

@@ -49,20 +49,36 @@ router.get('/getArtist', (req, res) => {
         // API call for the searched artist, which we will extract the album id from
         return axios({
           method: 'GET',
-          url: `https://api.spotify.com/v1/search?q=${artist}&type=album&include_external=audio&limit=5`,
+          url: `https://api.spotify.com/v1/search?q=${artist}&type=album&include_external=audio&limit=4`,
           headers: { 
               'Authorization': `Bearer  ${token}`
           }
       }).then((response) => {
-        let rndmNum = getRndInteger(0, response.data.albums.items.length)
+
+        // need to weed out singles, etc
+        const albumArr = response.data.albums.items.map(item => {
+          if(item.total_tracks > 5){
+            return item;
+          }
+        })
+
+        
+        let rndmNum = getRndInteger(0, albumArr.length)
+        console.log("*********************");
+        console.log("*********************");
+        console.log("*********************");
+        console.log("*********************");
+        console.log("*********************");
+        console.log("This is our response:", albumArr[rndmNum].artists);
 
         // gotta extract the album info of the album FROM WHICH we will pick songs.
         // This is so we can display that information on the recap page
-        const artistName = response.data.albums.items[rndmNum].artists[0].name;
-        const albumID = response.data.albums.items[rndmNum].id;
-        const coverArt = response.data.albums.items[rndmNum].images;
-        const releaseDate = response.data.albums.items[rndmNum].release_date;
-        const albumName = response.data.albums.items[rndmNum].name;
+        // *this is what I need to refactor. I can't choose any album that has total_tracks < 4
+        const artistName = albumArr[rndmNum].artists[0].name;
+        const albumID = albumArr[rndmNum].id;
+        const coverArt = albumArr[rndmNum].images;
+        const releaseDate = albumArr[rndmNum].release_date;
+        const albumName = albumArr[rndmNum].name;
         const albumInfo = {
           artist: artistName,
           albumID: albumID,
@@ -70,7 +86,6 @@ router.get('/getArtist', (req, res) => {
           releaseDate: releaseDate,
           albumName: albumName
         }
-        // console.log("album", albumInfo)
 
         // then we need to make the call for the tracks from that album
         return axios({

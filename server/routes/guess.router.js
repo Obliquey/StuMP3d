@@ -7,7 +7,7 @@ const {
 
 
 //   this route is for inserting the newly chosen song into the songs table, where a list of all listened-to songs will be kept
-  router.post('/setSong', (req, res) => {
+  router.post('/setSong', rejectUnauthenticated, (req, res) => {
       const song = req.body.song.name;
       const coverArt = req.body.albumInfo.coverArt[2].url;
       const releaseDate = req.body.albumInfo.releaseDate;
@@ -33,7 +33,8 @@ const {
   
 // This route is for inserting the outcome of a guess by the user into the history table
 // as well as formulating the score and updating the user's score
-  router.post('/guess', (req,res) => {
+// * Should refactor this with async / await syntax
+  router.post('/guess', rejectUnauthenticated, (req,res) => {
       const userID = req.user.id;
       const guess = req.body.songInfo.guess;
       const song = req.body.songInfo.correctSong.name;
