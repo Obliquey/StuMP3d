@@ -7,6 +7,7 @@ const rejectUnauthenticated = (req, res, next) => {
   } else {
     // failure best handled on the server. do redirect here.
     res.sendStatus(403);
+    res.redirect('http://localhost:3000/login')
   }
 };
 

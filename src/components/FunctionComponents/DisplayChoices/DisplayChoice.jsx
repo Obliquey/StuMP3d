@@ -34,14 +34,15 @@ function DisplayChoices(props) {
         <div className="grid grid-cols-2 w-max m-auto">
             {
                 props.songs.map(song => {
-                    //  * This is a veeeeeery temporary fix for if we get less than 4 tracks. I need to modify my API call to Spotify to not get singles/EPs.
+                    //  * This is a final stop-gap fix for if we get less than 4 tracks. I can't always trust Spotify to give me the right info
                     if(song === undefined) {
-                        return <p>No song</p>
+                        return <p></p>
                     } else {
                     return (
                         <button 
                             className="border-inherit rounded-full p-2 bg-purple-700 m-2 text-white font-medium"
                             onClick={() => handleChoice(song.name)}
+                            key={props.songs.indexOf(song)}
                         >
                               
                                 {song.name}
