@@ -15,13 +15,10 @@ function CallSpotify() {
         // will want to conditionally clear this when a song starts playing?
         setInput('');
     }
-    if(songsArrived === 'true') {
-        console.log("Previews:", previews);
-    }
 
     return (
         <div className="flex flex-col place-content-center space-y-4">
-            <button className="border-inherit rounded-full p-2 bg-play bg-purple-600 bg-cover bg-no-repeat bg-center text-black font-semibold w-72 h-72 order-1 self-center shadow-black shadow-md hover:shadow-purple-600" onClick={handleClick}></button>
+            <button className="border-inherit rounded-full p-2 bg-play bg-purple-600 bg-cover bg-no-repeat bg-center text-slate-300 font-semibold w-72 h-72 order-1 self-center shadow-black shadow-md hover:shadow-purple-600" onClick={handleClick}>Play</button>
             <div className="text-center order-2">
                 {/* I might want to wrap this input in a form */}
                 <input 

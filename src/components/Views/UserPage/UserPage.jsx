@@ -54,10 +54,10 @@ function UserPage() {
 
 
   return (
-    <div className="flex flex-row space-x-12">
+    <div className="grid grid-cols-3 space-x-12 gap-x-1 justify-center">
       {/* User Info + current streak, current score, etc */}
       <div 
-      className='m-auto basis-1/4 ml-86 outline outline-double outline-offset-8 outline-8 outline-purple-300 
+      className='m-auto mr-8 ml-86 outline outline-double outline-offset-8 outline-8 outline-purple-300 
       border-8 border-purple-400 rounded-3xl text-center bg-white w-96 p-12 space-y-8 '
       >
         <p className='text-4xl mb-24'>{user.username}</p>
@@ -68,7 +68,7 @@ function UserPage() {
 
       {/* their history, last ten songs listened to */}
       {/* Might want to make this it's own component */}
-      <div className="relative overflow-x-auto justify-self-center m-auto basis-1/2">
+      <div className="relative overflow-x-auto justify-self-center m-auto col-span-2">
         <p className='text-xl underline italic text-center'>History</p>
         <table className="w-auto border-spacing-1 h-1 m-auto text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-white uppercase bg-purple-800 dark:text-white">

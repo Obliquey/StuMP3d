@@ -31,7 +31,7 @@ function DisplayChoices(props) {
     };
 
     return (
-        <>
+        <div className="grid grid-cols-2 w-max m-auto">
             {
                 props.songs.map(song => {
                     //  * This is a veeeeeery temporary fix for if we get less than 4 tracks. I need to modify my API call to Spotify to not get singles/EPs.
@@ -51,7 +51,7 @@ function DisplayChoices(props) {
                     }
                 })
             }
-        </>
+        </div>
     )
 }
 export default DisplayChoices;

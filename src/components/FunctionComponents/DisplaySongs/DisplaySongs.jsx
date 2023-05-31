@@ -53,7 +53,7 @@ function DisplaySongs() {
             </>
         )
     } else {
-        return <p>Waiting for song</p>
+        return <p>^ Search for an artist ^</p>
     }
 }
 
