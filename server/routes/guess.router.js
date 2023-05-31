@@ -22,33 +22,13 @@ const {
                   ON CONFLICT ("song_name") DO NOTHING;
             `;
             const sqlValues = [song, artist, albumName, coverArt, releaseDate];
-
+            console.log("SQLVALUES:", sqlValues);
             const dbRes = await pool.query(sqlQuery, sqlValues)
-
+            console.log("Response from DB:", dbRes);
             res.sendStatus(201)
       } catch (error) {
             console.log("Error in /setSong, guess.router", error);
       }
-      // const song = req.body.song.name;
-      // const coverArt = req.body.albumInfo.coverArt[2].url;
-      // const releaseDate = req.body.albumInfo.releaseDate;
-      // const albumName = req.body.albumInfo.albumName
-      // const artist = req.body.albumInfo.artist;
-
-      // const sqlQuery = `
-      //       INSERT INTO "songs" ("song_name", "artist", "album", "cover_art", "year_released")
-      //       VALUES
-      //       ($1, $2, $3, $4, $5)
-      //       ON CONFLICT ("song_name") DO NOTHING;
-      // `;
-      // const sqlValues = [song, artist, albumName, coverArt, releaseDate];
-
-      // pool.query(sqlQuery, sqlValues)
-      //       .then(dbRes => {
-      //             res.sendStatus(201)
-      //       }).catch(dbErr => {
-      //             console.log("Error connecting to DB in /setSong, guess router:", dbErr);
-      //       })
   })
   
   
