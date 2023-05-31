@@ -39,7 +39,7 @@ const state = generateRandomString(16);
 
 
 // This is our call to Spotify to authorize the app with the user
-router.get('/login', cookieparser(), (req, res) => {
+router.get('/login', cookieparser(), rejectUnauthenticated, (req, res) => {
   const scope = 'streaming user-read-playback-position';
   // not sure what these are vvv but they seem to be necessary
   res.cookie(stateKey, state);
@@ -56,13 +56,12 @@ router.get('/login', cookieparser(), (req, res) => {
 });
 
 
-router.get('/callback', cookieparser(), function (req, res) {
-    // request refresh and access tokens after comparing states
+router.get('/callback', cookieparser(), rejectUnauthenticated, async function (req, res) {
+  try {
     let code = req.query.code || null;
     let state = req.query.state || null;
     let storedState = req.cookies ? req.cookies[stateKey] : null;
-    
-    // vvvv this if statement correctly checks state with Spotify's returned state, making sure what we got back from them wasn't hacking of any sort vvvv
+
     if (state === null || state !== storedState) {
       // I'll need to change this to a proper redirect page, same with line 119
         res.redirect('/#' +
@@ -85,47 +84,42 @@ router.get('/callback', cookieparser(), function (req, res) {
             }
           };
     
-        axios(config) // make request to token endpoint for our tokens
-            .then((response) => {
-                if (response.status === 200) {
+        const response = await axios(config)
 
-                    let tokenExpires = Number((Date.now() + response.data.expires_in))
-                    let access_token = response.data.access_token
-                    let refresh_token = response.data.refresh_token
-                    let userID = req.user.id;
-                    
-                    // *Got our tokens! Need to store them in the DB for access later, after determining the expiry time of the access token
-                    let sqlText = `UPDATE "users" 
-                        SET access_token = $1,
-                            refresh_token = $2,
-                            token_expires = $3
-                        WHERE users.id = $4;
-                    `;
+        if (response.status === 200) {
 
-                    let sqlValues = [access_token, refresh_token, tokenExpires, userID]
-                    pool.query(sqlText, sqlValues)
-                        .then(dbRes => {
-                            // again, once I get my page flow set up, I'll need to change this redirect vvvv
-                            res.redirect('http://localhost:3000/#/playPage')
-                        }).catch(dbErr => {
-                            console.log("Error connecting to our DB when storing access token", dbErr);
-                        })
+          let tokenExpires = Number((Date.now() + response.data.expires_in))
+          let access_token = response.data.access_token
+          let refresh_token = response.data.refresh_token
+          let userID = req.user.id;
+          
+          // *Got our tokens! Need to store them in the DB for access later, after determining the expiry time of the access token
+          let sqlText = `UPDATE "users" 
+              SET access_token = $1,
+                  refresh_token = $2,
+                  token_expires = $3
+              WHERE users.id = $4;
+          `;
 
-                        
-                        // *After successfully receiving our tokens, need to redirect to the User Login page / play page if they are logged in
-                    //    res.redirect('some kind of user page')
-                } else {
-                    // maybe make some kind of error page to redirect to, that takes the error message and makes a popup?
-                    res.redirect('/#' +
-                        querystring.stringify({
-                            error: 'invalid_token'
-                        }));
-                };
-            })
-            .catch(error => {
-                console.error("Error with axios call for tokens:", error);
-            });
-    }
+          let sqlValues = [access_token, refresh_token, tokenExpires, userID]
+          const dbRes = await pool.query(sqlText, sqlValues)
+
+          console.log("successfully reached the end of my OAuth route");
+            // again, once I get my page flow set up, I'll need to change this redirect vvvv
+            res.redirect('http://localhost:3000/#/playPage')
+
+      } else {
+          // maybe make some kind of error page to redirect to, that takes the error message and makes a popup?
+          res.redirect('/#' +
+              querystring.stringify({
+                  error: 'invalid_token'
+              }));
+      };
+  }} catch (error) {
+    console.log("Error authorizing with Spotify", error);
+    res.redirect('http://localhost:3000/login')
+  }
+    
   });
 
 module.exports = router;

@@ -22,7 +22,7 @@ function CallSpotify() {
             <div className="text-center order-2">
                 {/* I might want to wrap this input in a form */}
                 <input 
-                    className="border text-center pt-2 pb-2 text-lg tracking-widest bg-purple-600 text-white overflow-visible"
+                    className="border-2 border-black text-center pt-2 pb-2 text-lg tracking-widest bg-slate-100 text-black overflow-visible"
                     placeholder='artist' 
                     type="text" 
                     value={input}

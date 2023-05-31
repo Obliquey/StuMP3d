@@ -45,7 +45,7 @@ function DisplaySongs() {
 
         return (
             <>
-                <embed className="m-auto" src={song.URL}/>
+                <embed className="m-auto h-10" src={song.URL}/>
                 <DisplayChoices 
                     songs={allChoices}
                     correctSong={song}
