@@ -7,7 +7,7 @@ import './Footer.css';
 // or even care what the redux state is, so it doesn't need 'connect()'
 
 function Footer() {
-  return <footer className='text-3xl fixed inset-x-0 bottom-0'>StuMP3d</footer>;
+  return <footer className='text-3xl fixed inset-x-0 bottom-0 text-white'>StuMP3d</footer>;
 }
 
 export default Footer;

@@ -2,7 +2,8 @@ html,
 body,
 #react-root {
   height: 100%;
-  background-color: rgb(148 163 184);
+  /* background-color: rgb(148 163 184);*/
+  background-color: rebeccapurple;
 }
 
 body {

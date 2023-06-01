@@ -54,20 +54,28 @@ router.get('/getArtist', rejectUnauthenticated, async (req, res) => {
           }
         })
     
+        // * THE PROBLEM IS HERE vvvvv Somehow, this is still adding undefined items to the albumArr. Then, when the random number tries to select one, it can inadvertantly pick the undefined one.
         const albumArr = response.data.albums.items.map(item => {
-          if(item.total_tracks > 5){
+          if(item.total_tracks > 5 && item !== undefined){
             return item;
           }
         })
 
         
-        let rndmNum = getRndInteger(0, albumArr.length)
-
+        let rndmNum = getRndInteger(0, albumArr.length - 1)
+        console.log("This is our random number:", rndmNum, "And the length of our array:", albumArr.length);
         // gotta extract the album info of the album FROM WHICH we will pick songs.
         // This is so we can display that information on the recap page
-        //  * for some reason, every now and then it won't play a song when searched 
-        // * and it has something to do with the artists.name not being correct
-        const artistName = albumArr[rndmNum].artists[0].name;
+        const checkArtist = () => {
+            if(albumArr[rndmNum]?.artists[0]?.name === undefined){
+              return artist;
+            } else {
+              return albumArr[rndmNum].artists[0].name
+            }
+          };
+        
+        const artistName = checkArtist();
+        console.log("THis is our artist:", artistName, "And what we tried to put in there:", albumArr);
         const albumID = albumArr[rndmNum].id;
         const coverArt = albumArr[rndmNum].images;
         const releaseDate = albumArr[rndmNum].release_date;
@@ -87,8 +95,6 @@ router.get('/getArtist', rejectUnauthenticated, async (req, res) => {
           headers: {
               'Authorization': `Bearer  ${token}`
           }})
-
-        console.log("Checking what we're getting from Spotify, line:",85, response2.data);
 
         let previewURLS = response2.data.items.map(item => {
           return {URL: item.preview_url, name: item.name};

@@ -13,6 +13,7 @@ import storage from 'redux-persist/lib/storage';
 const persistConfig = {
   key: 'root',
   storage,
+  // * this may or may not work, but I can't be locked out of the app because I'm trying to save the current album
   blacklist: ['spotify']
 };
 
