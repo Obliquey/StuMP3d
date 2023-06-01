@@ -13,6 +13,7 @@ import storage from 'redux-persist/lib/storage';
 const persistConfig = {
   key: 'root',
   storage,
+  blacklist: ['spotify']
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

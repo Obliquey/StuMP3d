@@ -62,16 +62,11 @@ router.get('/getArtist', rejectUnauthenticated, async (req, res) => {
 
         
         let rndmNum = getRndInteger(0, albumArr.length)
-        console.log("*********************");
-        console.log("*********************");
-        console.log("*********************");
-        console.log("*********************");
-        console.log("*********************");
-        console.log("This is our response:", albumArr[rndmNum].artists[0]);
 
         // gotta extract the album info of the album FROM WHICH we will pick songs.
         // This is so we can display that information on the recap page
-        // *this is what I need to refactor. I can't choose any album that has total_tracks < 4
+        //  * for some reason, every now and then it won't play a song when searched 
+        // * and it has something to do with the artists.name not being correct
         const artistName = albumArr[rndmNum].artists[0].name;
         const albumID = albumArr[rndmNum].id;
         const coverArt = albumArr[rndmNum].images;
@@ -103,95 +98,6 @@ router.get('/getArtist', rejectUnauthenticated, async (req, res) => {
   } catch (error) {
     console.log("Error in our /getArtist route in spotifyAPI.router", error);
   }
-  // const artist = req.query.artist;
-  // const userID = req.user.id;
-  // // const infoToSend = []
-
-  // // fetch our token data from the DB
-  // pool.query(`SELECT access_token, token_expires, refresh_token FROM "users" WHERE users.id = $1;`, [userID])
-  // .then((dbRes) => {
-  //   // extract it
-  //     let token = dbRes.rows[0].access_token
-  //     let expiry = Number(Date.now() + dbRes.rows[0].token_expires);
-  //     let refreshToken = dbRes.rows[0].refresh_token
-  //     let items = [];
-
-  //       // API call for the searched artist, which we will extract the album id from
-  //       return axios({
-  //         method: 'GET',
-  //         url: `https://api.spotify.com/v1/search?q=${artist}&type=album&include_external=audio&limit=4`,
-  //         headers: { 
-  //             'Authorization': `Bearer  ${token}`
-  //         }
-  //     }).then((response) => {
-
-  //       // need to weed out singles, etc
-  //       const albumArr = response.data.albums.items.map(item => {
-  //         if(item.total_tracks > 5){
-  //           return item;
-  //         }
-  //       })
-
-        
-  //       let rndmNum = getRndInteger(0, albumArr.length)
-  //       console.log("*********************");
-  //       console.log("*********************");
-  //       console.log("*********************");
-  //       console.log("*********************");
-  //       console.log("*********************");
-  //       console.log("This is our response:", albumArr[rndmNum].artists);
-
-  //       // gotta extract the album info of the album FROM WHICH we will pick songs.
-  //       // This is so we can display that information on the recap page
-  //       // *this is what I need to refactor. I can't choose any album that has total_tracks < 4
-  //       const artistName = albumArr[rndmNum].artists[0].name;
-  //       const albumID = albumArr[rndmNum].id;
-  //       const coverArt = albumArr[rndmNum].images;
-  //       const releaseDate = albumArr[rndmNum].release_date;
-  //       const albumName = albumArr[rndmNum].name;
-  //       const albumInfo = {
-  //         artist: artistName,
-  //         albumID: albumID,
-  //         coverArt: coverArt,
-  //         releaseDate: releaseDate,
-  //         albumName: albumName
-  //       }
-
-  //       // then we need to make the call for the tracks from that album
-  //       return axios({
-  //           method: 'GET',
-  //           url: `https://api.spotify.com/v1/albums/${albumID}/tracks`,
-  //           headers: {
-  //               'Authorization': `Bearer  ${token}`
-  //           }
-  //       }).then(response => {
-          // gotta extract JUST the preview urls and the names of each song
-          // These we will return to the client side.
-
-//           // * Something is happening with our calls to Spotify. I need to restrict it so that I don't get singles, but even with full albums we are still getting undefined songs
-//           // * for our choices. Somewhere along the path of getting our songs to the front end we are losing info.
-
-//           console.log("Checking what we're getting from Spotify, line:",85, response.data);
-
-//           let previewURLS = response.data.items.map(item => {
-//             return {URL: item.preview_url, name: item.name};
-//           })
-//           let infoToSend = [albumInfo, previewURLS]
-//           res.send(infoToSend);
-
-
-//           // Don't mind these cascading catches
-//         }).catch(err => {
-//           console.log("Error making GET req to Spotify for albums", err);
-//         })
-//       }).catch(err => {
-//         console.log("Error making GET req to Spotify for artist", err);
-//         // If there is an error with our token access call to Spotify, this error will proc and we will go to refresh the token
-//         res.redirect(`/api/spotify/refresh_token/${artist}`)
-//       })
-//     }).catch(dbErr => {
-//       console.log("Error connecting to DB:", dbErr);
-//     })
 });
 
 

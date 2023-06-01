@@ -20,6 +20,7 @@ import RegisterPage from '../Views/RegisterPage/RegisterPage';
 import SpotifyLogin from '../Views/SpotifyLogin/SpotifyLogin';
 import PlayPage from '../Views/PlayPage/PlayPage';
 import RecapPage from '../Views/RecapPage/RecapPage';
+import LandingPage from '../Views/LandingPage/LandingPage';
 
 import './App.css';
 
@@ -38,7 +39,7 @@ function App() {
         <Nav />
         <Switch>
           {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
-          <Redirect exact from="/" to="/login" />
+          <Redirect exact from="/" to="/landing" />
 
           {/* Visiting localhost:3000/about will show the about page. */}
           <Route
@@ -99,6 +100,10 @@ function App() {
               // Otherwise, show the registration page
               <RegisterPage />
             }
+          </Route>
+
+          <Route exact path='/landing'>
+            <LandingPage />
           </Route>
 
           <Route exact path='/recap'>
