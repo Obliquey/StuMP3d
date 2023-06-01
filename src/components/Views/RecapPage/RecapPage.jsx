@@ -6,7 +6,7 @@ function RecapPage() {
     const albumInfo = useSelector(store => store.spotify.albumInfo)
     const history = useHistory();
     const dispatch = useDispatch();
-    console.log("This is our guess:", guess);
+
 
     const coverArt = albumInfo.coverArt[1].url;
     const albumName = albumInfo.albumName;

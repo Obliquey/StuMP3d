@@ -22,9 +22,8 @@ const {
                   ON CONFLICT ("song_name") DO NOTHING;
             `;
             const sqlValues = [song, artist, albumName, coverArt, releaseDate];
-            console.log("SQLVALUES:", sqlValues);
+
             const dbRes = await pool.query(sqlQuery, sqlValues)
-            console.log("Response from DB:", dbRes);
             res.sendStatus(201)
       } catch (error) {
             console.log("Error in /setSong, guess.router", error);
@@ -65,8 +64,10 @@ const {
 
                         const dbRes4 = await pool.query(`UPDATE "users" SET current_score = $1, current_streak = $2 RETURNING current_score, current_streak;`, [score, streak]);
                         console.log("Successfully updated DB with new score/streak:", dbRes4.rows);
+                        res.sendStatus(201);
                   } catch (error) {
                         console.log("Error updating DB with new score/streak:", error);
+                        res.sendStatus(500);
                   }
                         
             } else if (guess === false) {
@@ -76,8 +77,10 @@ const {
 
                         const dbRes5 = await pool.query(`UPDATE "users" SET current_score = $1, current_streak = $2 RETURNING current_score, current_streak;`, [score, streak]);
                         console.log("Successfully updated DB with new score/streak:", dbRes5.rows);
+                        res.sendStatus(201);
                   } catch (error) {
                         console.log("Error updating DB with new score/streak:", dbErr);
+                        res.sendStatus(500);
                   }
             }
       } catch (error) {
