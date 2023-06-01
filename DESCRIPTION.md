@@ -27,4 +27,9 @@
     - [] Re-format to be mobile-first (particularly concerning is the history table)
     - [] Error pop-ups for when Spotify calls error out
     - [] Add images to the How-To page to make the gameplay clearer
-    
+
+
+**BUGS**
+
+    - [] Getting an undefined item in my albumArr in the spotifyAPI router.
+    - [] 

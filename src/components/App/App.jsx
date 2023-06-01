@@ -67,7 +67,7 @@ function App() {
           <ProtectedRoute
             exact path='/playPage' >
               <PlayPage />
-            </ProtectedRoute>
+          </ProtectedRoute>
 
           <ProtectedRoute
             // logged in shows UserPage else shows LoginPage
