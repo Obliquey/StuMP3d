@@ -17,7 +17,7 @@ function LandingPage() {
                     <button 
                     className="border border-black p-2 rounded-full bg-purple-600 text-white"
                     onClick={() => history.push('/login')}
-                    >Login or Register</button>
+                    >Login / Register</button>
                 }
                 <button 
                 className="border border-black p-2 rounded-full bg-purple-600 text-white"

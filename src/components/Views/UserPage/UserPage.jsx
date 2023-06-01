@@ -58,18 +58,18 @@ function UserPage() {
       {/* User Info + current streak, current score, etc */}
       <div 
       className='m-10 mt-10 h-96 p-10 outline outline-double outline-offset-8 outline-8 outline-purple-300 
-      border-8 border-purple-400 rounded-3xl text-center bg-white w-96 p-12 space-y-8 '
+      border-8 border-purple-400 rounded-3xl text-center bg-white w-96 p-12 space-y-8'
       >
-        <p className='text-4xl mb-24'>{user.username}</p>
-        <p>Current Score: {userScore.score}</p>
-        <p>Current Streak: {userScore.streak}</p>
+        <p className='text-4xl mb-24 font-mono'>{user.username}</p>
+        <p className='font-mono'>Score: {userScore.score}</p>
+        <p className='font-mono'>Streak: {userScore.streak}</p>
         <button onClick={playAgain} className='border-inherit rounded-full p-2 bg-purple-700 m-2 text-white font-medium'>Play Again</button>
       </div>
 
       {/* their history, last ten songs listened to */}
       {/* Might want to make this it's own component */}
       <div className="relative overflow-x-auto m-auto">
-        <p className='text-xl underline italic text-center'>History</p>
+        <p className='text-xl underline italic text-center text-white font-mono'>History</p>
         <table className="w-auto border-spacing-1 h-1 m-auto text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-white uppercase bg-gray-500 dark:text-white">
             <tr>
