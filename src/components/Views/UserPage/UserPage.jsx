@@ -54,13 +54,13 @@ function UserPage() {
 
 
   return (
-    <div className="flex flex-row flex-wrap space-x-12 gap-x-1 justify-center">
+    <div className="grid grid-cols-1 space-x-12 gap-x-1 justify-center">
       {/* User Info + current streak, current score, etc */}
       <div 
-      className='m-10 mt-10 h-96 p-10 outline outline-double outline-offset-8 outline-8 outline-purple-300 
-      border-8 border-purple-400 rounded-3xl text-center bg-white w-96 p-12 space-y-8'
+      className='m-auto mt-10 mb-12 h-auto p-10 pt-8 pb-8 outline outline-double outline-offset-8 outline-8 outline-purple-300 
+      border-8 border-purple-400 rounded-3xl text-center bg-white w-auto p-12 space-y-8'
       >
-        <p className='text-4xl mb-24 font-mono'>{user.username}</p>
+        <p className='text-4xl mb-12 font-mono'>{user.username}</p>
         <p className='font-mono'>Score: {userScore.score}</p>
         <p className='font-mono'>Streak: {userScore.streak}</p>
         <button onClick={playAgain} className='border-inherit rounded-full p-2 bg-purple-700 m-2 text-white font-medium'>Play Again</button>
