@@ -7,7 +7,7 @@ function PlayPage() {
 
 
     return(
-        <div className="place-content-center text-center">
+        <div className="place-content-center text-center mt-28">
             {/* This is the search function component */}
             <CallSpotify />
 

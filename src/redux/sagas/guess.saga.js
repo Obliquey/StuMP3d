@@ -15,11 +15,6 @@ function* correctGuess(action) {
             type: 'SET_CORRECT_SONG',
             payload: {song: action.payload, guess:'true'}
         })
-        if (res === 200) {
-            console.log("Successfully made axios request to server in correctGuess saga");
-        } else {
-            console.log("Error in correctGuess saga, error making axios request to server");
-        }
     } catch (error) {
         console.log("Error in correctGuess saga", error);
     }
@@ -37,11 +32,6 @@ function* incorrectGuess(action) {
             type:'SET_CORRECT_SONG',
             payload:{song:action.payload, guess:'false'}
         })
-        if(res === 200) {
-            console.log("Successfully made axios request to server in incorrectGuess saga")
-        }else {
-            console.log("Error in incorrectGuess saga, error making axios request to db");
-        }
     } catch (error) {
         console.log("Error in incorrectGuess saga", error);
     }

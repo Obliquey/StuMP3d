@@ -6,18 +6,26 @@ function LoginPage() {
   const history = useHistory();
 
   return (
-    <div>
+    <div className='grid grid-cols-1 mt-28'>
       <LoginForm />
 
-      <center>
+      <center className='grid grid-cols-1'>
         <button
           type="button"
-          className="btn btn_asLink"
+          className="text-white underline m-3"
           onClick={() => {
             history.push('/registration');
           }}
         >
           Register
+        </button>
+        <button
+          className='underline'
+          onClick={() => {
+            history.push('/landing')
+          }}
+        >
+          Back
         </button>
       </center>
     </div>

@@ -2,11 +2,12 @@ html,
 body,
 #react-root {
   height: 100%;
-  /* background-color: rebeccapurple; */
+  /* background-color: rgb(148 163 184);*/
+  background-color: rebeccapurple;
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   margin: 0px;
 }
 
@@ -110,4 +111,8 @@ Form Treatment
 input {
   margin: 5px;
   margin-bottom: 10px;
+}
+
+#histTable {
+  margin-left: 0px;
 }
