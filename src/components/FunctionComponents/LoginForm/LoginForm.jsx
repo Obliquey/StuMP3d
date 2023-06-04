@@ -25,7 +25,7 @@ function LoginForm() {
   }; // end login
 
   return (
-      <form className="border border-inherit bg-white p-4 w-3/12 mt-28 m-auto shadow-md shadow-gray-600" onSubmit={login}>
+      <form className="border border-inherit bg-white p-4 w-auto mt-28 m-auto shadow-md shadow-gray-600" onSubmit={login}>
         <h2 className='mb-2'>Login</h2>
         {errors.loginMessage && (
           <h3 className="alert" role="alert">
