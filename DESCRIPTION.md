@@ -7,6 +7,8 @@
 
     - How do I get the information around the songs and album to the client-side? Currently, I am extracting it all in the router, so as to deal with less information on the client. Dunno how well that will work, but that's what I'm rolling with for now.
         - That is how I decided to keep doing it. However, I have a small issue of my array-extraction server-side for some reason creates undefined items, which breaks my code before I send it to the client. For now, I've restricted the randomizer to retrieving array.length - 1, because the undefined item was always last. 
+
+    - Had to reformat to a mobile-first design AFTER buidling the whole project. The biggest issue was recreating the table in the user-page, moving it from a side-by-side flow (grid rows) to an above-and-under flow (grid-columns). The table I originally built was wayyyy to wide for mobile devices and unfortunatly wasn't responsive. What I created STILL isn't responsive, but oh well. I really don't see this to be an app people use on their computers much, so if it's primarily mobile-friendly then we're good.
     
 
 
@@ -24,12 +26,13 @@
     - [X] Need to figure out how to get the page to refresh upon item deletion from the table.
     - [X] Implement scoring, using basic score X streak math.
     - [] Need to edit my SQL for storing songs, or at least searching for songs. Somehow, songs with an apostrophe in them disrupt the INSERT
-    - [] Re-format to be mobile-first (particularly concerning is the history table)
+    - [X] Re-format to be mobile-first (particularly concerning is the history table)
     - [] Error pop-ups for when Spotify calls error out
     - [] Add images to the How-To page to make the gameplay clearer
 
 
 **BUGS**
 
-    - [] Getting an undefined item in my albumArr in the spotifyAPI router.
+    - [?] Getting an undefined item in my albumArr in the spotifyAPI router.
+    - [] For some reason, some times the user's history table DELETE button takes a couple clicks before it successfully deletes. 
     - [] 
