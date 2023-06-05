@@ -32,6 +32,7 @@ function AboutPage() {
             <li className='mt-2 border border-x-0 border-t-0 border-dotted font-mono'>PostgreSQL</li>
             <li className='mt-2 border border-x-0 border-t-0 border-dotted font-mono'>TailwindCSS</li>
             <li className='mt-2 border border-x-0 border-t-0 border-dotted font-mono'>Material UI</li>
+            <li className='mt-2 border border-x-0 border-t-0 border-dotted font-mono'>Node.js</li>
           </ul>
 
           Connect with me on LinkedIn: <a className='underline' href='https://www.linkedin.com/in/anders--boyum/'>https://www.linkedin.com/in/anders--boyum/</a>
