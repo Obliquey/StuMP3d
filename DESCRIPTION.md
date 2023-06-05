@@ -29,6 +29,8 @@
     - [X] Re-format to be mobile-first (particularly concerning is the history table)
     - [] Error pop-ups for when Spotify calls error out
     - [] Add images to the How-To page to make the gameplay clearer
+    - [] Would loooove to add some animations to the play button. Either a thumping for the play button or 
+            some audio-visuals of the music.
 
 
 **BUGS**
