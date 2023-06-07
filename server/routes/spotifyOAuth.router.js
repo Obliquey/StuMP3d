@@ -106,7 +106,7 @@ router.get('/callback', cookieparser(), rejectUnauthenticated, async function (r
 
           console.log("successfully reached the end of my OAuth route");
             // again, once I get my page flow set up, I'll need to change this redirect vvvv
-            res.redirect('http://localhost:3000/#/playPage')
+            res.redirect('https://frozen-plateau-32043.herokuapp.com/#/playPage')
 
       } else {
           // maybe make some kind of error page to redirect to, that takes the error message and makes a popup?
@@ -117,7 +117,7 @@ router.get('/callback', cookieparser(), rejectUnauthenticated, async function (r
       };
   }} catch (error) {
     console.log("Error authorizing with Spotify", error);
-    res.redirect('http://localhost:3000/login')
+    res.redirect('https://frozen-plateau-32043.herokuapp.com/#/login')
   }
     
   });
