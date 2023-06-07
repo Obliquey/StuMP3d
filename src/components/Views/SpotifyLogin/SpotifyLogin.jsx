@@ -20,7 +20,7 @@ function SpotifyLogin() {
         <div className="text-center text-2xl text-white m-auto mt-72">
             <a 
             id="spotifyLink" 
-            href="https://frozen-plateau-32043.herokuapp.com/#/api/spotifyOAuth/login">AUTHORIZING WITH SPOTIFY</a>
+            href="https://frozen-plateau-32043.herokuapp.com/api/spotifyOAuth/login">AUTHORIZING WITH SPOTIFY</a>
             <LinearProgress color="secondary" />
         </div>
     )
