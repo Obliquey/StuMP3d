@@ -18,7 +18,7 @@ require('dotenv').config();
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 // vvvv stuff specifically for logging the user in vvvv
-const redirect_uri = 'http://localhost:5000/api/spotifyOAuth/callback'
+const redirect_uri = 'https://frozen-plateau-32043.herokuapp.com/api/spotifyOAuth/callback'
 const stateKey = 'spotify_auth_state';
 // function to generate random numbers to select random album/songs, etc
 function getRndInteger(min, max) {
