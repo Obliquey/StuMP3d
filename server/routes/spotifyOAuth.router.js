@@ -64,7 +64,7 @@ router.get('/callback', cookieparser(), rejectUnauthenticated, async function (r
 
     if (state === null || state !== storedState) {
       // I'll need to change this to a proper redirect page, same with line 119
-        res.redirect('/#' +
+        res.redirect('https://frozen-plateau-32043.herokuapp.com/#' +
             querystring.stringify({
                 error: 'state_mismatch'
             }));
